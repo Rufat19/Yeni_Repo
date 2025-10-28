@@ -11,6 +11,7 @@ from handlers import (
 )
 from handlers.db_utils import init_db
 from database.db import create_tables
+from database import get_all_news, add_news_to_db
 
 
 async def on_startup(bot: Bot):
@@ -55,6 +56,41 @@ async def main():
     # Database inicializasiya
     init_db()
     create_tables()
+    # Seed news if empty
+    try:
+        existing = get_all_news()
+        if not existing:
+            # Try to load from data/news.json
+            seed_items = []
+            try:
+                import json
+                from config import BASE_DIR
+                news_path = os.path.join(BASE_DIR, "data", "news.json")
+                if os.path.exists(news_path):
+                    with open(news_path, "r", encoding="utf-8") as f:
+                        seed_items = json.load(f) or []
+            except Exception:
+                seed_items = []
+
+            if not seed_items:
+                seed_items = [
+                    {
+                        "title": "Yeni: botda dizayn və menyu təkmilləşdi",
+                        "content": (
+                            "• Baş menyu 2 sütunlu olur\n"
+                            "• RBCron qısayolları əlavə olundu\n"
+                            "• Köstəbək oyunu info və qrup dəvət düyməsi\n"
+                            "• Rəylər siyahısı daha səliqəli"
+                        ),
+                    }
+                ]
+            for item in seed_items:
+                try:
+                    add_news_to_db(item.get("title", "Xəbər"), item.get("content", ""), ADMIN_ID)
+                except Exception:
+                    pass
+    except Exception:
+        pass
 
     # Token yoxlaması
     if not BOT_TOKEN:

@@ -33,22 +33,33 @@ def log_user_start(user_id):
 
 # Əsas menyu düymələri
 def get_main_buttons():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="⚡ Əmsal Oyunu", callback_data="fast_test_start")],
-            [InlineKeyboardButton(text="🏆 Sosial Mühit kanalına daxil ol", callback_data="channel_access_menu")],
-            [InlineKeyboardButton(text="🌍 Dünya Görüşü- quiz paketlər", callback_data="quiz_world_menu")],
-            [InlineKeyboardButton(text="📊 Power BI Sertifikat Testləri", callback_data="cert_menu")],
-            [InlineKeyboardButton(text="📦 Sosial ödənişlər- quiz paketlər", callback_data="quiz")],
-            [InlineKeyboardButton(text="📄 Müsahibələrə Hazırlıq Texnikası", callback_data="get_pdf")],
-            [InlineKeyboardButton(text="🆕 Yeniliklər", callback_data="news_menu")],
-            [InlineKeyboardButton(text="🕹️ Komanda Köstəbək Oyunu", callback_data="game_info")],
-            [InlineKeyboardButton(text="🛠️ Bot sifarişi (depozit)", callback_data="order_bot")],
-            [InlineKeyboardButton(text="💰 RBCron balansım", callback_data="balance_menu")],
-            [InlineKeyboardButton(text="🌟 İstifadəçi rəyləri", callback_data="reviews_menu")],
-            [InlineKeyboardButton(text="ℹ️ Qəbul Mərkəzləri haqqında", callback_data="about_bot")]
-        ]
-    )
+    rows = [
+        [
+            InlineKeyboardButton(text="⚡ Əmsal Oyunu", callback_data="fast_test_start"),
+            InlineKeyboardButton(text="🕹️ Köstəbək Oyunu", callback_data="game_info"),
+        ],
+        [
+            InlineKeyboardButton(text="� Sosial Mühit", callback_data="channel_access_menu"),
+            InlineKeyboardButton(text="🆕 Yeniliklər", callback_data="news_menu"),
+        ],
+        [
+            InlineKeyboardButton(text="🌍 Dünya Görüşü (quiz)", callback_data="quiz_world_menu"),
+            InlineKeyboardButton(text="� Sosial ödənişlər (quiz)", callback_data="quiz"),
+        ],
+        [
+            InlineKeyboardButton(text="📊 Power BI Sertifikat", callback_data="cert_menu"),
+            InlineKeyboardButton(text="� Müsahibə Texnikası", callback_data="get_pdf"),
+        ],
+        [
+            InlineKeyboardButton(text="� RBCron balansım", callback_data="balance_menu"),
+            InlineKeyboardButton(text="🌟 İstifadəçi rəyləri", callback_data="reviews_menu"),
+        ],
+        [
+            InlineKeyboardButton(text="🛠️ Bot sifarişi (depozit)", callback_data="order_bot"),
+            InlineKeyboardButton(text="ℹ️ Qəbul Mərkəzləri", callback_data="about_bot"),
+        ],
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
 # /start komandası
