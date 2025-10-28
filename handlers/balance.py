@@ -3,7 +3,6 @@ import os
 import asyncio
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-from translations import get_text
 from config import CARD_NUMBER, ADMIN_ID
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import StateFilter
@@ -23,36 +22,36 @@ async def balance_query(message: Message):
     balance = get_balance(user_id)
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text=get_text("show_balance_btn"), callback_data="show_balance")],
-            [InlineKeyboardButton(text=get_text("fill_balance_btn"), callback_data="fill_balance")]
+            [InlineKeyboardButton(text="Balansı göstər", callback_data="show_balance")],
+            [InlineKeyboardButton(text="Balansı artır", callback_data="fill_balance")]
         ]
     )
-    await message.answer(get_text("your_balance").format(balance=balance), reply_markup=keyboard)
+    await message.answer(f"Sizin balansınız: {balance} RBCron", reply_markup=keyboard)
 
 @router.message(StateFilter("waiting_recipient_id"))
 async def recipient_id_handler(message: Message, state: FSMContext):
     recipient_id = message.text.strip()
     if not recipient_id.isdigit():
-        await message.answer(get_text("invalid_id"))
+        await message.answer("Yanlış ID daxil edildi. Zəhmət olmasa, düzgün Telegram ID daxil edin.")
         return
     sender_id = message.from_user.id
     if int(recipient_id) == sender_id:
-        await message.answer(get_text("cannot_send_to_self"))
+        await message.answer("Özünüzə göndərə bilməzsiniz.")
         return
     balance = get_balance(sender_id)
     if balance < 10:
-        await message.answer(get_text("not_enough_balance"))
+        await message.answer("Balansınız kifayət etmir.")
         await state.clear()
         return
     await state.update_data(recipient_id=int(recipient_id))
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text=get_text("confirm_send_btn"), callback_data="confirm_send_rbcrypt")],
-            [InlineKeyboardButton(text=get_text("cancel_btn"), callback_data="cancel_send_rbcrypt")],
+            [InlineKeyboardButton(text="Təsdiqlə və göndər", callback_data="confirm_send_rbcrypt")],
+            [InlineKeyboardButton(text="Ləğv et", callback_data="cancel_send_rbcrypt")],
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
     )
-    await message.answer(get_text("confirm_send_text").format(recipient_id=recipient_id), reply_markup=keyboard)
+    await message.answer(f"{recipient_id} ID-li istifadəçiyə 10 RBCron göndərmək istəyirsiniz?", reply_markup=keyboard)
     await state.set_state("waiting_send_confirm")
 
 @router.callback_query(F.data == "confirm_send_rbcrypt")
