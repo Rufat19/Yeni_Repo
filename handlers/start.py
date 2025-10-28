@@ -109,7 +109,15 @@ async def start_menu(message: Message, state: FSMContext):
         except Exception as e:
             print(f"[LOG ERROR] {e}")
 
-    # 🔸 1. Təqdimat videosu
+    # 🔸 1. Səmimi salam və qısa izah
+    greeting = (
+        "👋 Xoş gəldiniz!\n\n"
+        "Burada quiz paketləri, oyunlar, faydalı kanallar və balans əməliyyatları bir mərkəzdədir.\n"
+        "Sizə uyğun bölməni seçin və davam edin."
+    )
+    await message.answer(greeting)
+
+    # 🔸 2. Qısa təqdimat videosu
     try:
         video = FSInputFile("media/about_bot.mp4")
         await message.answer_video(
@@ -119,8 +127,8 @@ async def start_menu(message: Message, state: FSMContext):
     except Exception as e:
         print(f"[VIDEO ERROR] {e}")
 
-    # 🔸 2. 5 saniyə gözləyir və menyunu göstərir
-    await asyncio.sleep(5)
+    # 🔸 3. 2 saniyə gözləyir və əsas menyunu göstərir
+    await asyncio.sleep(2)
 
     text = (
         "Aşağıdakı seçimlərdən birini seçin və bütün funksiyalara rahat giriş əldə edin:\n\n"
@@ -179,8 +187,10 @@ main_menu_keyboard = get_main_buttons()
 async def balance_menu_callback(callback: CallbackQuery):
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="👛 Balansı göstər", callback_data="show_balance")],
-            [InlineKeyboardButton(text="💳 Balansı artır", callback_data="fill_balance")],
+            [
+                InlineKeyboardButton(text="👛 Balansı göstər", callback_data="show_balance"),
+                InlineKeyboardButton(text="💳 Balansı artır", callback_data="fill_balance"),
+            ],
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
     )

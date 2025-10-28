@@ -13,8 +13,10 @@ router = Router()
 async def reviews_menu_callback(callback: CallbackQuery, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Rəyini yaz və qiymətləndir", callback_data="review")],
-            [InlineKeyboardButton(text="Bütün rəylərə bax", callback_data="show_reviews")],
+            [
+                InlineKeyboardButton(text="✍️ Rəy yaz", callback_data="review"),
+                InlineKeyboardButton(text="📚 Bütün rəylər", callback_data="show_reviews"),
+            ],
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
         ]
     )

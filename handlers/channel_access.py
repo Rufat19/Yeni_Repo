@@ -35,9 +35,10 @@ async def channel_access_menu(callback: CallbackQuery, state: FSMContext):
     balance = get_balance(user_id)
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-
-            [InlineKeyboardButton(text="🌐 Sosial Mühit", callback_data="info_sosial_muhit")],
-            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
+            [
+                InlineKeyboardButton(text="🌐 Sosial Mühit", callback_data="info_sosial_muhit"),
+                InlineKeyboardButton(text="🏠 Əsas menyu", callback_data="main_menu"),
+            ]
         ]
     )
     msg = f"Kanal seçin:\n\nCari balansınız: {balance} RBCron"
