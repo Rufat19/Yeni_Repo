@@ -43,6 +43,7 @@ def load_news():
 def save_news(news_list):
     """Yenilikləri news.json-a yazır."""
     try:
+        os.makedirs(os.path.dirname(NEWS_FILE), exist_ok=True)
         with open(NEWS_FILE, "w", encoding="utf-8") as f:
             json.dump(news_list, f, ensure_ascii=False, indent=2)
     except Exception as e:

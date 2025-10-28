@@ -5,7 +5,7 @@ import datetime
 import asyncio
 from database.queries import add_user, get_all_news, get_news_by_id
 from utils.logger_utils import log_event
-from config import ADMIN_ID
+from config import ADMIN_ID, APP_VERSION
 
 router = Router()
 
@@ -110,10 +110,11 @@ async def start_menu(message: Message, state: FSMContext):
     # 🔸 2. 5 saniyə gözləyir və menyunu göstərir
     await asyncio.sleep(5)
 
-    await message.answer(
-        "Aşağıdakı seçimlərdən birini seçin və bütün funksiyalara rahat giriş əldə edin:",
-        reply_markup=get_main_buttons()
+    text = (
+        "Aşağıdakı seçimlərdən birini seçin və bütün funksiyalara rahat giriş əldə edin:\n\n"
+        f"🏷️ Versiya: {APP_VERSION}"
     )
+    await message.answer(text, reply_markup=get_main_buttons())
 
 
 # ✅ YENİLİKLƏR (lokal işlək versiya)

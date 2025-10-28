@@ -1,7 +1,7 @@
 import asyncio
 import os
 from aiogram import Bot, Dispatcher
-from config import BOT_TOKEN, ADMIN_ID, DB_PATH
+from config import BOT_TOKEN, ADMIN_ID, DB_PATH, APP_VERSION, REPO_NAME
 from utils.logging_config import setup_logging, get_logger
 import background_tasks
 from handlers import (
@@ -19,6 +19,20 @@ async def on_startup(bot: Bot):
     logger.info("Bot started successfully ✅")
 
     try:
+        # Build info to admin for verification
+        try:
+            me = await bot.get_me()
+            info = (
+                f"✅ Bot start edildi\n"
+                f"🤖 @{getattr(me, 'username', 'unknown')}\n"
+                f"📦 Repo: {REPO_NAME}\n"
+                f"🏷️ Versiya: {APP_VERSION}"
+            )
+            if ADMIN_ID:
+                await bot.send_message(ADMIN_ID, info)
+        except Exception:
+            pass
+
         bot_chat_id = ADMIN_ID
         asyncio.create_task(background_tasks.send_regular_message(bot, bot_chat_id, interval=3600))
         asyncio.create_task(background_tasks.monitor_new_users(bot, bot_chat_id))
