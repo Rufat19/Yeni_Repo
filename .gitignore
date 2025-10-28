@@ -1,0 +1,40 @@
+# Python & environment
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Windows system files
+Desktop.ini
+ntuser.*
+AppData/
+vmlogs/
+Thumbs.db
+
+# IDE / editor cache
+.vscode/
+.idlerc/
+.bash_history
+.lesshst
+.rustup/
+
+# Backup / other projects
+Telegram_bots/
+Sosial_t-lim-i/
+quiz-frontend/
+
+# Additional ignores for clean repo
+.venv/
+.env.*
+*.egg-info/
+logs/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+database.db
+data/*.db
+database/*.db
+dist/
+build/
+__pypackages__/

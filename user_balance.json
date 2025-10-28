@@ -1,0 +1,1 @@
+{"get_balance": "def get_balance(user_id):\n    if not os.path.exists(BALANCE_FILE):\n        return 0\n    with open(BALANCE_FILE, \"r\", encoding=\"utf-8\") as f:\n        try:\n            balances = json.load(f)\n        except json.JSONDecodeError:\n            balances = {}\n    return balances.get(str(user_id), 0)", "6520873307": 130, "7084032248": 101}
