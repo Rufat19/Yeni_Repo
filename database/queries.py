@@ -1,39 +1,32 @@
 import os
 import json
-from .db_connect import create_pool, pool
+from config import BASE_DIR
+from .db import add_user as _sqlite_add_user, get_all_users as _sqlite_get_all_users
 
 # ========== İSTİFADƏÇİLƏR ÜÇÜN ==========
-async def add_user(user_id: int, name: str, lang: str):
-    """Yeni istifadəçi əlavə et — PostgreSQL varsa ora, yoxdursa, sadəcə keç."""
+def add_user(user_id: int, name: str, lang: str | None = None):
+    """Yeni istifadəçini lokal SQLite bazaya əlavə et.
+
+    Qeyd: 'lang' hazırda saxlanmır; gələcəkdə lazım olarsa, sxemə əlavə edilə bilər.
+    """
     try:
-        if pool is None:
-            await create_pool()
-        async with pool.acquire() as conn:
-            await conn.execute("""
-                INSERT INTO users (user_id, name, lang)
-                VALUES ($1, $2, $3)
-                ON CONFLICT (user_id) DO NOTHING;
-            """, user_id, name, lang)
+        _sqlite_add_user(user_id, name)
     except Exception as e:
-        print(f"[WARN] add_user PostgreSQL işləmədi: {e}")
+        print(f"[WARN] add_user (SQLite) uğursuz: {e}")
 
 
-async def get_all_users():
-    """Bütün istifadəçiləri göstər (PostgreSQL)."""
+def get_all_users():
+    """Bütün istifadəçiləri göstər (SQLite)."""
     try:
-        if pool is None:
-            await create_pool()
-        async with pool.acquire() as conn:
-            rows = await conn.fetch("SELECT * FROM users;")
-            return rows
+        return _sqlite_get_all_users()
     except Exception as e:
-        print(f"[WARN] get_all_users PostgreSQL işləmədi: {e}")
+        print(f"[WARN] get_all_users (SQLite) uğursuz: {e}")
         return []
 
 
 # ========== YENİLİKLƏR ÜÇÜN (JSON SAXLAMA) ==========
 
-NEWS_FILE = "news.json"
+NEWS_FILE = os.path.join(BASE_DIR, "data", "news.json")
 
 def load_news():
     """news.json faylını oxuyur."""

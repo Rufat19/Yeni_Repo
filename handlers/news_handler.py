@@ -51,7 +51,7 @@ async def save_news_content(message: Message, state: FSMContext):
 
     # DB-yə yazmağa cəhd
     try:
-        news_id = await add_news_to_db(title, content, message.from_user.id)
+        news_id = add_news_to_db(title, content, message.from_user.id)
         if not news_id:
             # Əgər DB cavab vermirsə, lokal yaddaşa yaz
             news_id = len(local_news_cache) + 1
@@ -72,7 +72,7 @@ async def save_news_content(message: Message, state: FSMContext):
 
     # Bütün istifadəçilərə göndəririk
     try:
-        users = await get_all_users()
+        users = get_all_users()
     except Exception:
         users = []  # əgər DB işləməsə, heç kimə göndərmirik
 
@@ -104,7 +104,7 @@ async def save_news_content(message: Message, state: FSMContext):
 async def read_news_cb(query: CallbackQuery):
     news_id = int(query.data.split(":")[1])
     try:
-        news = await get_news_by_id(news_id)
+        news = get_news_by_id(news_id)
     except Exception:
         news = next((n for n in local_news_cache if n["id"] == news_id), None)
 
@@ -122,7 +122,7 @@ async def read_news_cb(query: CallbackQuery):
 @router.message(Command("news"))
 async def list_news(message: Message):
     try:
-        news_list = await get_all_news()
+        news_list = get_all_news()
     except Exception:
         news_list = local_news_cache
 
@@ -140,7 +140,7 @@ async def list_news(message: Message):
 @router.callback_query(F.data == "show_news")
 async def show_news_from_inline(query: CallbackQuery):
     try:
-        news_list = await get_all_news()
+        news_list = get_all_news()
     except Exception:
         news_list = local_news_cache
 
