@@ -41,8 +41,8 @@ async def channel_access_menu(callback: CallbackQuery, state: FSMContext):
             ]
         ]
     )
-    msg = f"Kanal seçin:\n\nCari balansınız: {balance} RBCron"
-    await callback.message.answer(msg, reply_markup=keyboard)
+    msg = f"🎯 Kanal seçimi — cari balansınız: <b>{balance}</b> RBCron\n\nSeçmək üçün düyməyə basın:" 
+    await callback.message.answer(msg, parse_mode="HTML", reply_markup=keyboard)
     await callback.answer()
 
 # Kanal haqqında info və ödəniş təsdiqi
@@ -54,15 +54,14 @@ async def channel_info_callback(callback: CallbackQuery):
     balance = get_balance(user_id)
     msg = (
         f"{data['description']}\n\n"
-        f"Kanal: {data['title']}\n"
-        f"Giriş üçün çıxılacaq məbləğ: {data['price']} RBCron\n"
-        f"Cari balansınız: {balance} RBCron\n\n"
+        f"📌 Kanal: {data['title']}\n"
+        f"💰 Giriş üçün tələb olunan məbləğ: {data['price']} RBCron\n"
+        f"🔎 Cari balansınız: {balance} RBCron\n\n"
         f"Davam etmək üçün aşağıdakı düyməyə basın."
     )
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="✅ Giriş et", callback_data=f"access_{key}")],
-            [InlineKeyboardButton(text="💳 Balansı artır", callback_data="fill_balance")],
+            [InlineKeyboardButton(text="✅ Giriş et", callback_data=f"access_{key}"), InlineKeyboardButton(text="💳 Balansı artır", callback_data="fill_balance")],
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
         ]
     )
@@ -89,10 +88,11 @@ async def access_channel(callback: CallbackQuery):
             member_limit=1
         )
         await callback.message.answer(
-            f"✅ Qeydiyyat uğurlu!\n\n"
+            f"🎉 Uğurla ödəniş edildi və link yarandı!\n\n"
             f"📌 Kanal: {data['title']}\n"
-            f"🔗 Linkiniz: {invite.invite_link}\n"
-            f"💰 Yeni balansınız: {get_balance(user_id)} RBCron"
+            f"🔗 Sənin linkin: {invite.invite_link}\n"
+            f"💰 Yeni balansın: {get_balance(user_id)} RBCron\n\n"
+            "Linkə klikləyərək kanala daxil ola bilərsən. Xoş gəldin!"
         )
     except Exception as e:
         await callback.message.answer(f"❌ Link yaradıla bilmədi.\nSəbəb: {e}")

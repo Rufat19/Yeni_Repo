@@ -10,7 +10,8 @@ router = Router()
 def get_text(key: str) -> str:
     texts = {
         "about_bot_info": (
-            "<b>DSMF və DOST Mərkəzləri — Sosial xidmətlər bir pəncərədə!</b>\n\n"
+                "👋 <b>Salam! Bu bot sosial xidmətlər və faydalı məlumatlar üçün hazırlanmış yardımçınızdır.</b>\n\n"
+                "<b>DSMF və DOST Mərkəzləri — Sosial xidmətlər bir pəncərədə!</b>\n\n"
             "🏛️ <b>DSMF</b> — pensiya, sosial müavinət, sığorta və fərdi uçotla bağlı xidmətlər.\n\n"
             "📍 <b>Əsas qəbul mərkəzləri (seçilmiş):</b>\n"
             "• Sosial Ödənişlərin Təyinatı Mərkəzi — Bakı, H. Əliyev 143\n"

@@ -30,7 +30,7 @@ async def start_add_news(message: Message, state: FSMContext):
     if message.from_user.id != ADMIN_ID:
         return await message.answer("❌ Bu əmri yalnız admin yaza bilər.")
     
-    await message.answer("📝 Yeniliyin başlığını daxil et:")
+    await message.answer("📝 Yeni yenilik əlavə et — əvvəlcə başlığı yazın:")
     await state.set_state(AddNewsState.waiting_for_title)
 
 
@@ -38,7 +38,7 @@ async def start_add_news(message: Message, state: FSMContext):
 @router.message(AddNewsState.waiting_for_title)
 async def get_news_title(message: Message, state: FSMContext):
     await state.update_data(title=message.text)
-    await message.answer("📄 İndi isə yeniliyin məzmununu yaz:")
+    await message.answer("📄 İndi isə yeniliyin məzmununu yaz (qısa və aydın):")
     await state.set_state(AddNewsState.waiting_for_content)
 
 
@@ -87,16 +87,17 @@ async def save_news_content(message: Message, state: FSMContext):
         if not user_id:
             continue
         try:
+            # göndəriləcək mesaj daha canlı olsun — başlıq + qısa xəbər
             await message.bot.send_message(
                 chat_id=user_id,
-                text=f"📢 *{title}*\nYeni yenilik əlavə olundu!",
+                text=f"📢 *{title}*\n\n{content[:200]}...\n\n🔔 Yeniliyi tam oxumaq üçün düyməyə basın.",
                 reply_markup=kb,
                 parse_mode="Markdown"
             )
         except Exception:
             continue  # bəziləri block edə bilər, davam et
 
-    await message.answer("✅ Yenilik əlavə olundu və bütün istifadəçilərə göndərildi.")
+    await message.answer("✨ Uğurla əlavə olundu və istifadəçilərə göndərildi.")
 
 
 # 🔹 Xəbəri oxumaq üçün inline düymə
@@ -110,10 +111,9 @@ async def read_news_cb(query: CallbackQuery):
 
     if not news:
         return await query.answer("❌ Xəbər tapılmadı.", show_alert=True)
-
     await query.message.answer(
-        f"📌 *{news['title']}*\n\n{news['content']}",
-        parse_mode="Markdown"
+        f"📌 <b>{news['title']}</b>\n\n{news['content']}",
+        parse_mode="HTML"
     )
     await query.answer()
 
@@ -127,13 +127,12 @@ async def list_news(message: Message):
         news_list = local_news_cache
 
     if not news_list:
-        return await message.answer("Hələlik yenilik yoxdur.")
+        return await message.answer("📭 Hələlik yenilik yoxdur.")
 
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=n["title"], callback_data=f"read_news:{n['id']}")] for n in news_list
     ])
-
-    await message.answer("📰 Bütün yeniliklər:", reply_markup=kb)
+    await message.answer("📰 Yeniliklər — seçin:", reply_markup=kb)
 
 
 # 🔹 "Yeniliklər" inline düyməsi (start.py-dən çağırmaq üçün)
@@ -145,7 +144,7 @@ async def show_news_from_inline(query: CallbackQuery):
         news_list = local_news_cache
 
     if not news_list:
-        return await query.answer("Hələlik yenilik yoxdur.", show_alert=True)
+        return await query.answer("📭 Hələlik yenilik yoxdur.", show_alert=True)
 
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=n["title"], callback_data=f"read_news:{n['id']}")] for n in news_list

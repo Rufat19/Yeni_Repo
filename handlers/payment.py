@@ -11,21 +11,31 @@ payment_router = Router()
 async def send_receipt_to_admin(bot, user_id, photo_id):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Təsdiqlə", callback_data=f"payment_confirm_{user_id}")],
-            [InlineKeyboardButton(text="Rədd et", callback_data=f"payment_reject_{user_id}")]
+            [InlineKeyboardButton(text="✅ Təsdiqlə", callback_data=f"payment_confirm_{user_id}"), InlineKeyboardButton(text="❌ Rədd et", callback_data=f"payment_reject_{user_id}")]
         ]
+    )
+    # try to get user display info
+    display = None
+    try:
+        user_obj = await bot.get_chat(user_id)
+        display = user_obj.full_name or getattr(user_obj, "username", None) or str(user_id)
+    except Exception:
+        display = str(user_id)
+
+    caption = (
+        f"📥 Yeni ödəniş qəbzi\n"
+        f"👤 İstifadəçi: {display} (id: {user_id})\n\n"
+        "🔹 Mövcud paketlər:\n"
+        "• 100 RBCron — 3 AZN\n"
+        "• 250 RBCron — 5 AZN\n"
+        "• 750 RBCron — 10 AZN\n"
+        "• 1500 RBCron — 20 AZN\n\n"
+        "👉 Altındakı düymələrdən istifadə edərək təsdiq və ya rədd edin."
     )
     await bot.send_photo(
         ADMIN_ID,
         photo=photo_id,
-        caption=(
-            f"Balans artırmaq üçün yeni ödəniş:\n"
-            f"Telegram ID: {user_id}\n"
-            "100 RBCron — 3 AZN\n"
-            "250 RBCron — 5 AZN\n"
-            "750 RBCron — 10 AZN\n"
-            "1500 RBCron — 20 AZN\n\n"
-        ),
+        caption=caption,
         reply_markup=keyboard
     )
 
@@ -45,13 +55,11 @@ async def payment_screenshot(message: Message):
         """, (user_id, message.from_user.full_name, "Yox", caption, "Naməlum", "Ödəniş gözləyir"))
         conn.commit()
     
-    await message.answer(
-        "📥 Ödəniş qəbzi qəbul edildi! Admin təsdiqləyəndən sonra xəbər veriləcək."
-    )
+    await message.answer("📥 Qəbz qəbul edildi! Admin tezliklə yoxlayacaq — sənə xəbər verəcəyik. 🙌")
     if message.photo and len(message.photo) > 0:
         await send_receipt_to_admin(message.bot, user_id, message.photo[-1].file_id)
     else:
-        await message.answer("Xəta baş verdi: foto tapılmadı.")
+        await message.answer("❗ Xəta: foto tapılmadı. Zəhmət olmasa qəbzin şəklini göndərin.")
 
 @payment_router.callback_query(F.data.startswith("payment_confirm_"))
 async def payment_confirm_callback(callback: CallbackQuery, state: FSMContext):
@@ -93,10 +101,10 @@ async def manual_coin_handler(message: Message, state: FSMContext):
     if bot is not None:
         await bot.send_message(
             user_id,
-            f"Ödəniş təsdiqləndi! Balansınız artırıldı: +{coin_amount} RBCron\nYeni balans: {get_balance(user_id)} RBCron",
+            f"🎉 Ödəniş təsdiqləndi! Balansınıza +{coin_amount} RBCron əlavə olundu.\nYeni balans: {get_balance(user_id)} RBCron",
             reply_markup=main_menu_keyboard
         )
-        await message.answer(f"Təsdiqləndi və istifadəçiyə {coin_amount} RBCron əlavə olundu.", reply_markup=main_menu_keyboard)
+        await message.answer(f"🎉 Təsdiqləndi və istifadəçiyə +{coin_amount} RBCron əlavə olundu.", reply_markup=main_menu_keyboard)
     else:
         await message.answer("Xəta baş verdi: bot instance tapılmadı.", reply_markup=main_menu_keyboard)
     await state.clear()
@@ -130,7 +138,7 @@ async def payment_reject_reason_handler(message: Message, state: FSMContext):
         if bot is not None:
             await bot.send_message(
                 user_id,
-                f"Ödəniş admin tərəfindən rədd edildi.\nSəbəb: {reason}",
+                f"❌ Ödəniş admin tərəfindən rədd edildi.\nSəbəb: {reason}",
                 reply_markup=main_menu_keyboard
             )
             await message.answer("Rədd səbəbi istifadəçiyə göndərildi.", reply_markup=main_menu_keyboard)

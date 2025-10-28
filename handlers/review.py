@@ -21,7 +21,7 @@ async def reviews_menu_callback(callback: CallbackQuery, state: FSMContext):
         ]
     )
     if callback.message:
-        await callback.message.answer("İstifadəçi rəyləri menyusu:", reply_markup=keyboard)
+        await callback.message.answer("🌟 Rəylər — sənin fikrin dəyərlidir!", reply_markup=keyboard)
     await callback.answer()
 
 @router.callback_query(F.data == "main_menu")
@@ -62,10 +62,8 @@ def get_all_reviews():
 async def review_callback(callback: CallbackQuery, state: FSMContext):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="⭐⭐⭐⭐⭐", callback_data="rate_5")],
-            [InlineKeyboardButton(text="⭐⭐⭐⭐", callback_data="rate_4")],
-            [InlineKeyboardButton(text="⭐⭐⭐", callback_data="rate_3")],
-            [InlineKeyboardButton(text="⭐⭐", callback_data="rate_2")],
+            [InlineKeyboardButton(text="⭐⭐⭐⭐⭐", callback_data="rate_5"), InlineKeyboardButton(text="⭐⭐⭐⭐", callback_data="rate_4")],
+            [InlineKeyboardButton(text="⭐⭐⭐", callback_data="rate_3"), InlineKeyboardButton(text="⭐⭐", callback_data="rate_2")],
             [InlineKeyboardButton(text="⭐", callback_data="rate_1")],
         ]
     )
@@ -81,7 +79,7 @@ async def rate_callback(callback: CallbackQuery, state: FSMContext):
         await state.update_data(rating=rating)
         await state.set_state(ReviewForm.waiting_text)
         if callback.message:
-            await callback.message.answer("Rəyinizi yazın:")
+            await callback.message.answer("Rəyinizi yazın — qısa və səmimi 😊")
         await callback.answer()
     else:
         if callback.message:
@@ -99,10 +97,10 @@ async def review_text(message: Message, state: FSMContext):
     save_review(user_id, rating, text, username=username, full_name=full_name)
     main_menu_kb = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
+            [InlineKeyboardButton(text="🏠 Ana menyu", callback_data="main_menu")]
         ]
     )
-    await message.answer("Rəyiniz və qiymətləndirməniz üçün təşəkkürlər!", reply_markup=main_menu_kb)
+    await message.answer("Təşəkkürlər! 🌟 Rəyiniz qeyd olundu — qiymətləndirməniz bizi inkişaf etdirir.", reply_markup=main_menu_kb)
     await state.clear()
 
 @router.callback_query(F.data == "show_reviews")
@@ -114,12 +112,7 @@ async def show_reviews_callback(callback: CallbackQuery, state: FSMContext):
     )
     if not reviews:
         if callback.message:
-            msg_obj = await callback.message.answer("📭 Hələ rəy yoxdur.", reply_markup=kb)
-            await asyncio.sleep(60)
-            try:
-                await msg_obj.delete()
-            except Exception:
-                pass
+            await callback.message.answer("📭 Hələ ki, rəy yoxdur — sən ilk ol!", reply_markup=kb)
     else:
         lines = []
         for idx, r in enumerate(reviews, 1):
@@ -132,12 +125,7 @@ async def show_reviews_callback(callback: CallbackQuery, state: FSMContext):
             lines.append(block)
         msg_text = "\n\n".join(lines)
         if callback.message:
-            msg_obj = await callback.message.answer(msg_text, reply_markup=kb)
-            await asyncio.sleep(60)
-            try:
-                await msg_obj.delete()
-            except Exception:
-                pass
+            await callback.message.answer(msg_text, reply_markup=kb)
     await callback.answer()
 
 # Admin cavab vermək üçün (ADMIN_ID ilə yoxla)
@@ -171,7 +159,14 @@ async def process_admin_reply(message: Message, state: FSMContext):
         reviews[review_idx]["reply"] = message.text
         with open(REVIEWS_FILE, "w", encoding="utf-8") as f:
             json.dump(reviews, f, ensure_ascii=False, indent=2)
-        await message.answer("Cavab əlavə olundu.")
+        # istifadəçiyə xəbər göndərək (əgər username/id varsa)
+        target = reviews[review_idx].get("user_id")
+        try:
+            if target:
+                await message.bot.send_message(int(target), f"🗨️ Admin cavab verdi: {message.text}")
+        except Exception:
+            pass
+        await message.answer("Cavab əlavə olundu və istifadəçiyə göndərildi (əgər mümkün olduysa).")
     else:
         await message.answer("Rəy tapılmadı.")
     await state.clear()

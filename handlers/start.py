@@ -39,19 +39,19 @@ def get_main_buttons():
             InlineKeyboardButton(text="🕹️ Köstəbək Oyunu", callback_data="game_info"),
         ],
         [
-            InlineKeyboardButton(text="� Sosial Mühit", callback_data="channel_access_menu"),
+            InlineKeyboardButton(text="🌐 Sosial Mühit", callback_data="channel_access_menu"),
             InlineKeyboardButton(text="🆕 Yeniliklər", callback_data="news_menu"),
         ],
         [
             InlineKeyboardButton(text="🌍 Dünya Görüşü (quiz)", callback_data="quiz_world_menu"),
-            InlineKeyboardButton(text="� Sosial ödənişlər (quiz)", callback_data="quiz"),
+            InlineKeyboardButton(text="🧾 Sosial ödənişlər", callback_data="quiz"),
         ],
         [
             InlineKeyboardButton(text="📊 Power BI Sertifikat", callback_data="cert_menu"),
-            InlineKeyboardButton(text="� Müsahibə Texnikası", callback_data="get_pdf"),
+            InlineKeyboardButton(text="📄 Müsahibə Texnikası", callback_data="get_pdf"),
         ],
         [
-            InlineKeyboardButton(text="� RBCron balansım", callback_data="balance_menu"),
+            InlineKeyboardButton(text="💳 RBCron balansım", callback_data="balance_menu"),
             InlineKeyboardButton(text="🌟 İstifadəçi rəyləri", callback_data="reviews_menu"),
         ],
         [
@@ -97,10 +97,10 @@ async def start_menu(message: Message, state: FSMContext):
             if ADMIN_ID:
                 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 admin_text = (
-                    f"🔔 Yeni istifadəçi botu işə saldı:\n"
+                    f"🔔 Yeni istifadəçi gəldi — bot işə düşdü!\n"
                     f"👤 {display_name} (id: {user.id})\n"
                     f"🕒 {now}\n"
-                    f"🌐 lang: {lang}"
+                    f"🌐 Lang: {lang}"
                 )
                 try:
                     await message.bot.send_message(ADMIN_ID, admin_text)
@@ -111,9 +111,9 @@ async def start_menu(message: Message, state: FSMContext):
 
     # 🔸 1. Səmimi salam və qısa izah
     greeting = (
-        "👋 Xoş gəldiniz!\n\n"
-        "Burada quiz paketləri, oyunlar, faydalı kanallar və balans əməliyyatları bir mərkəzdədir.\n"
-        "Sizə uyğun bölməni seçin və davam edin."
+        "👋 Salam! Xoş gəlmisiniz — burada istədiyiniz hər şey bir yerdə!\n\n"
+        "🧭 Quizlər, oyunlar, faydalı kanallar və balans əməliyyatları — hamısı asan istifadə üçün hazırlanıb.\n"
+        "Aşağıdan bir bölmə seçin, mən sizi yönləndirərəm!"
     )
     await message.answer(greeting)
 
@@ -122,7 +122,7 @@ async def start_menu(message: Message, state: FSMContext):
         video = FSInputFile("media/about_bot.mp4")
         await message.answer_video(
             video,
-            caption="🎬 Qısaca təqdimat: Bot nələr edə bilir?",
+        caption="🎬 Qısa təqdimat — botun əsas imkanlarına nəzər:",
         )
     except Exception as e:
         print(f"[VIDEO ERROR] {e}")
@@ -130,11 +130,9 @@ async def start_menu(message: Message, state: FSMContext):
     # 🔸 3. 2 saniyə gözləyir və əsas menyunu göstərir
     await asyncio.sleep(2)
 
-    text = (
-        "Aşağıdakı seçimlərdən birini seçin və bütün funksiyalara rahat giriş əldə edin:\n\n"
-        f"🏷️ Versiya: {APP_VERSION}"
-    )
-    await message.answer(text, reply_markup=get_main_buttons())
+    intro = "👇 İndi bir seçim edin — sürətli və rahat giriş üçün düymələr:" 
+    footer = f"\n\n🏷️ Versiya: {APP_VERSION}"
+    await message.answer(intro + footer, reply_markup=get_main_buttons())
 
 
 # ✅ YENİLİKLƏR (lokal işlək versiya)

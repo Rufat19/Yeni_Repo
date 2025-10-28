@@ -22,11 +22,11 @@ async def balance_query(message: Message):
     balance = get_balance(user_id)
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Balansı göstər", callback_data="show_balance")],
-            [InlineKeyboardButton(text="Balansı artır", callback_data="fill_balance")]
+            [InlineKeyboardButton(text="👛 Balansı göstər", callback_data="show_balance")],
+            [InlineKeyboardButton(text="💳 Balansı artır", callback_data="fill_balance")]
         ]
     )
-    await message.answer(f"Sizin balansınız: {balance} RBCron", reply_markup=keyboard)
+    await message.answer(f"💰 Sənin balansın: <b>{balance}</b> RBCron — nə etmək istəyirsən?", parse_mode="HTML", reply_markup=keyboard)
 
 @router.message(StateFilter("waiting_recipient_id"))
 async def recipient_id_handler(message: Message, state: FSMContext):
@@ -67,8 +67,8 @@ async def show_balance_callback(callback: CallbackQuery):
     user_id = callback.from_user.id
     balance = get_balance(user_id)
     if callback.message is not None:
-        msg = await callback.message.answer(f"Sizin balansınız: {balance} RBCron")
-        await asyncio.sleep(5)
+        msg = await callback.message.answer(f"💰 Sizin balansınız: <b>{balance}</b> RBCron", parse_mode="HTML")
+        await asyncio.sleep(7)
         try:
             await msg.delete()
         except Exception:
@@ -81,18 +81,19 @@ async def fill_balance_callback(callback: CallbackQuery):
         user_id = callback.from_user.id
         balance = get_balance(user_id)
         await callback.message.answer(
-            f"Balansınızı artırmaq üçün aşağıdakı karta ödəniş edin:\n\n"
-            f"<b>Kart nömrəsi:</b> <code>{CARD_NUMBER}</code>\n\n"
-            "<b>Paketlər və qiymətlər:</b>\n"
-            "100 RBCron — 3 AZN\n"
-            "250 RBCron — 5 AZN\n"
-            "750 RBCron — 10 AZN\n"
-            "1500 RBCron — 20 AZN\n\n"
-            f"💰 Cari balansınız: <b>{balance} RBCron</b>\n\n"
-            "Ödəniş etdikdən sonra qəbzin şəklini buraya, mənə göndərin.\n"
-            "Qəbz təsdiqləndikdən sonra balansınız artırılacaq.\n"
-            "Təsdiq adətən 24 saat ərzində baş verir.\n"
-            "Anlayışınız üçün təşəkkür edirik.",
+            (
+                "💳 Balansı artırmaq üçün aşağıdakı karta ödəniş edin:\n\n"
+                f"<b>Kart nömrəsi</b>: <code>{CARD_NUMBER}</code>\n\n"
+                "🔹 <b>Paketlər</b>:\n"
+                "• 100 RBCron — 3 AZN\n"
+                "• 250 RBCron — 5 AZN\n"
+                "• 750 RBCron — 10 AZN\n"
+                "• 1500 RBCron — 20 AZN\n\n"
+                f"💰 Cari balansınız: <b>{balance}</b> RBCron\n\n"
+                "Ödəniş etdikdən sonra qəbzin şəklini bu söhbətə göndərin (foto).\n"
+                "Biz qəbzi nəzərdən keçirib, təsdiq etdikdə balansınızı artıracağıq — adətən 24 saat içində.\n\n"
+                "🙏 Təşəkkürlər! Hər hansı sualınız varsa, yazın."
+            ),
             parse_mode="HTML"
         )
     await callback.answer()
@@ -197,23 +198,32 @@ async def main_menu_callback(callback: CallbackQuery, state: FSMContext):
 async def send_receipt_to_admin(bot, user_id, photo_id):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="100 RBCron (3 AZN)", callback_data=f"balance_confirm_{user_id}_100")],
-            [InlineKeyboardButton(text="250 RBCron (5 AZN)", callback_data=f"balance_confirm_{user_id}_250")],
-            [InlineKeyboardButton(text="750 RBCron (10 AZN)", callback_data=f"balance_confirm_{user_id}_750")],
-            [InlineKeyboardButton(text="1500 RBCron (20 AZN)", callback_data=f"balance_confirm_{user_id}_1500")],
-            [InlineKeyboardButton(text="Rədd et", callback_data=f"balance_reject_{user_id}")]
+            [InlineKeyboardButton(text="100 ➕ (3 AZN)", callback_data=f"balance_confirm_{user_id}_100"), InlineKeyboardButton(text="250 ➕ (5 AZN)", callback_data=f"balance_confirm_{user_id}_250")],
+            [InlineKeyboardButton(text="750 ➕ (10 AZN)", callback_data=f"balance_confirm_{user_id}_750"), InlineKeyboardButton(text="1500 ➕ (20 AZN)", callback_data=f"balance_confirm_{user_id}_1500")],
+            [InlineKeyboardButton(text="❌ Rədd et", callback_data=f"balance_reject_{user_id}")]
         ]
+    )
+    # cəhdi istifadəçi barədə daha çox məlumatla göndər
+    display = None
+    try:
+        user_obj = await bot.get_chat(user_id)
+        display = user_obj.full_name or getattr(user_obj, "username", None) or str(user_id)
+    except Exception:
+        display = str(user_id)
+
+    caption = (
+        f"📥 Yeni ödəniş qəbzi\n"
+        f"👤 İstifadəçi: {display} (id: {user_id})\n\n"
+        "🔹 Mövcud paketlər:\n"
+        "• 100 RBCron — 3 AZN\n"
+        "• 250 RBCron — 5 AZN\n"
+        "• 750 RBCron — 10 AZN\n"
+        "• 1500 RBCron — 20 AZN\n\n"
+        "👉 Qəbzin altından uyğun düyməni seçərək təsdiq edə və ya rədd edə bilərsiniz."
     )
     await bot.send_photo(
         ADMIN_ID,
         photo=photo_id,
-        caption=(
-            f"Balans artırmaq üçün yeni ödəniş: Telegram ID: {user_id}\n"
-            "Ödəniş seçimləri:\n"
-            "100 RBCron — 3 AZN\n"
-            "250 RBCron — 5 AZN\n"
-            "750 RBCron — 10 AZN\n"
-            "1500 RBCron — 20 AZN"
-        ),
+        caption=caption,
         reply_markup=keyboard
     )
