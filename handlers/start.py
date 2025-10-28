@@ -3,7 +3,8 @@ from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 from aiogram.fsm.context import FSMContext
 import datetime
 import asyncio
-from database.queries import add_user, get_all_news, get_news_by_id
+from database.queries import add_user
+from database import get_all_news, get_news_by_id
 from utils.logger_utils import log_event
 from config import ADMIN_ID, APP_VERSION
 
@@ -160,3 +161,37 @@ async def read_news_callback(callback: CallbackQuery):
         await callback.message.answer(f"⚠️ Xəbəri oxumaq mümkün olmadı:\n{e}")
     await callback.answer()
 main_menu_keyboard = get_main_buttons()
+
+
+# 💰 RBCron menyusu (qısa yol)
+@router.callback_query(F.data == "balance_menu")
+async def balance_menu_callback(callback: CallbackQuery):
+    kb = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="👛 Balansı göstər", callback_data="show_balance")],
+            [InlineKeyboardButton(text="💳 Balansı artır", callback_data="fill_balance")],
+            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
+        ]
+    )
+    await callback.message.answer("RBCron balans əməliyyatları:", reply_markup=kb)
+    await callback.answer()
+
+
+# 🕹️ Köstəbək oyunu haqqında məlumat (qısa yol)
+@router.callback_query(F.data == "game_info")
+async def game_info_callback(callback: CallbackQuery):
+    text = (
+        "🕹️ Köstəbək — komanda oyunu\n\n"
+        "• Qrupda /game yazın (bot admin olmalıdır).\n"
+        f"• Min {3} nəfər tələb olunur.\n"
+        "• Hamıya eyni söz, birinə fərqli söz düşür.\n"
+        "• Təsvir edin, şübhəlini tapın, səs verin!"
+    )
+    kb = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="Qrupa əlavə et", url=f"https://t.me/{callback.bot.username}?startgroup=true")],
+            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
+        ]
+    )
+    await callback.message.answer(text, reply_markup=kb)
+    await callback.answer()
