@@ -1,126 +1,76 @@
-# Alien_BiBOT Telegram Botu
+# Sosial Instruktor — Telegram Botu
 
-## Qısa Təsvir
+Modern, çoxfunksiyalı Telegram botu (Aiogram v3) — oyunlar, yeniliklər, rəy sistemi, faydalı kanallar və sadə balans idarəsi bir mərkəzdə.
 
-Alien_BiBOT – Telegram üçün interaktiv, çoxfunksiyalı botdur. Bot aşağıdakı əsas imkanları təqdim edir:
+## Xüsusiyyətlər
 
-- 🌟 Rəy və ulduzla qiymətləndirmə sistemi
-- 🕹️ Komanda Köstəbək Oyunu (impostor tapma oyunu)
-- 📄 PDF faylların alınması (balansdan RBCron tutulur)
-- 💰 Balans izləmə və artırma
-- 🚀 Qeydiyyat və giriş paneli
-- 📢 Faydalı kanallar və sosial mühit
-- 👀 Bütün istifadəçi rəylərini görmək
-- 🤖 Bot haqqında məlumat
-- Admin üçün istifadəçi tarixçəsi
+- 🕹️ Köstəbək Oyunu (qrupda /game) — komanda ilə əyləncə, min. 3 nəfər
+- 🆕 Yeniliklər — admin əlavə edir, istifadəçilərə bildiriş gedir
+- 🌟 İstifadəçi rəyləri — ulduzla qiymətləndir, rəy yaz, admin cavab verə bilər
+- � RBCron balansı — balansı göstər/artır, qəbz adminə təsdiq üçün gedir
+- � PDF hədiyyəsi — “Müsahibəyə hazırlıq texnikaları” faylı
+- 🌐 Sosial Mühit kanalı — qısa təsvir, giriş və link dəstəyi
+- ℹ️ DSMF/DOST haqqında məlumat blokları
+- 🔔 Admin start bildirişi — hansı build-in işə düşdüyü görünür
 
-## Quraşdırma
+Arxitektura: Aiogram Router-ları (`handlers/*`), SQLite (yerli `database.db`), bəzi asan saxlanılan JSON faylları (`reviews.json` və s.).
 
-1. **Tələblər:**
-   - Python 3.9+
-   - `aiogram` kitabxanası (`pip install aiogram`)
-   - Bot tokeni və admin ID-ni `config.py` faylında saxla:
-     ````python
-     BOT_TOKEN = "BOTUN_TOKENI"
-     ADMIN_ID = 123456789
-     ````
+## Quraşdırma (lokal)
 
-2. **Qovluq Strukturu:**
-   ```
-   Alien_BiBOT/
-   ├── handlers/
-   │   ├── start.py
-   │   ├── entry.py
-   │   ├── balance.py
-   │   ├── review.py
-   │   ├── game.py
-   │   ├── admin.py
-   │   └── balance_utils.py
-   ├── config.py
-   ├── run.py
-   └── pdfs/
-   ```
+1) Tələblər
+- Python 3.12 (runtime.txt ilə uyğun)
+- Pip paketləri: `pip install -r requirements.txt`
 
-3. **Botun işə salınması:**
-   Terminalda:
-   ```
-   python run.py
-   ```
+2) Mühit dəyişənləri (`.env`)
+```
+BOT_TOKEN=xxxx:yyyy
+ADMIN_ID=123456789
+APP_VERSION=dev
+REPO_NAME=Yeni_Repo
+CARD_NUMBER=0000 0000 0000 0000
+```
 
-## İstifadəçi Komandaları və Funksiyalar
+3) İşə salma
+- VS Code task: Run Bot (venv)
+- və ya terminaldan:
+```
+python run.py
+```
 
-### `/start`  
-- **Yalnız şəxsi mesajda işləyir.**
-- Əsas menyu və bütün funksiyalara çıxış verir.
+## İstifadəçi axınları (qısa)
 
-### `/game`  
-- **Yalnız qrupda işləyir.**
-- Komanda köstəbək oyunu başlayır. Ən azı 3 oyunçu lazımdır.
-- Bot hər kəsə DM-də söz göndərir, birinə fərqli söz.
-- 2 dəqiqə sonra səsvermə başlayır.
+- `/start` (şəxsi mesaj): salam, qısa tanıtım videosu, iki sütunlu menyu
+- “Köstəbək Oyunu” (qısayol) → qrupda `/game` üçün yönləndirmə
+- “Yeniliklər” → başlıqlar siyahısı, oxu düyməsi
+- “Rəylər” → ulduz seç, rəy yaz, bütün rəylərə bax
+- “Balans” → balans göstər/artır; qəbz fotosu adminə gedir, təsdiqdən sonra artırılır
+- “PDF” → hədiyyə sənədi bir düymə ilə
+- “Sosial Mühit” → kanal haqqında məlumat və giriş
 
-### Rəy və Qiymətləndirmə  
-- İstifadəçi 5 ulduz seçir və rəy yazır.
-- Bütün rəylər açıqdır, admin istəsə cavab verə bilər.
+## Deploy (Railway)
 
-### PDF Almaq  
-- PDF almaq üçün balansda kifayət qədər RBCron olmalıdır.
-- Hər PDF üçün 2 RBCron çıxılır.
-
-### Balans  
-- Balansı göstərmək və artırmaq mümkündür.
-
-### Qeydiyyat və Giriş  
-- Qeydiyyat üçün balansdan RBCron çıxılır, unikal link göndərilir.
-
-### Admin Paneli  
-- `/admin` yalnız şəxsi mesajda və admin üçün aktivdir.
-- Son 50 istifadəçi tarixçəsini göstərir.
-
-## Əlavə Qeydlər
-
-- Botun bütün inline buttonları maraqlı adlar və smayliklərlə hazırlanıb.
-- Qrupda `/start` və `/admin` işləməz.
-- Qrupda yalnız `/game` komandası aktivdir.
-- Bütün funksiyalar `handlers` qovluğunda modullar şəklindədir.
-
-## Əlaqə və Dəstək
-
-Sual və ya problem yaranarsa, adminə müraciət edin:  
-**@Rufat19**
-
----
-
-## 2025-08-17 - Əlavə və düzəlişlər
-
-- Əsas menyuya qayıt buttonu bütün handler-larda tam menyunu göstərir (get_main_buttons).
-- Fast Test, Quiz, Cert, Balance, Review, Channel Access və Order Bot modullarında əsas menyu callback-ları standartlaşdırıldı.
-- RBCron ilə bağlı bütün yanlış və aldatıcı mesajlar silindi.
-- Test bitdikdə nəticə və tam menyu birgə göstərilir.
-- Order Bot bölməsində "Razı deyiləm" buttonu çıxarıldı.
-- README üçün bugünkü dəyişikliklər və kodun son vəziyyəti qeyd olundu.
-- Bütün router-lar run.py faylında düzgün şəkildə əlavə olundu və botun işə düşməsi yoxlanıldı.
-- Əlavə buttonlar, callback-lar və istifadəçi təcrübəsi üzrə düzəlişlər tətbiq olundu.
-
-**Botun kodunu və funksiyalarını öz ehtiyacına uyğun dəyişə bilərsən!**
-
-## Railway ilə Deploy
-
-Bu bot Railway üzərində “worker” kimi işləyir.
-
-- Python versiyası: `runtime.txt` → `python-3.12`
-- Başlatma əmri: `Procfile` → `worker: python run.py`
-- Lazım olan environment dəyişənləri:
-   - `BOT_TOKEN` – Telegram bot tokeni
-   - `ADMIN_ID` – admin Telegram ID (rəqəm)
+- Procfile: `worker: python run.py`
+- runtime.txt: `python-3.12`
+- Environment: `BOT_TOKEN`, `ADMIN_ID`, opsional `APP_VERSION`, `REPO_NAME`, `CARD_NUMBER`
 
 Addımlar:
-1. Bu layihəni yeni GitHub repoya push et (aşağıdakı “Repoya push” bölməsinə bax).
-2. Railway-də yeni Project aç və “Deploy from GitHub” seç.
-3. Repo seçildikdən sonra servisin tipini Worker olaraq saxla (Procfile avtomatik oxunur).
-4. Settings → Variables bölməsində `BOT_TOKEN` və `ADMIN_ID` əlavə et.
-5. Deploy et – Railway `requirements.txt` faylından asılılıqları quracaq və `python run.py` ilə botu işə salacaq.
+1. Repo GitHub-da hazır olsun
+2. Railway → New Project → Deploy from GitHub → bu repozitoriyanı seç
+3. Variables bölməsində tələb olunan mühit dəyişənlərini əlavə et
+4. Deploy — asılılıqlar avtomatik qurulacaq, worker prosesi işə düşəcək
 
 Qeydlər:
-- Lokal `logs/` və `*.db` faylları `.gitignore` ilə ignor edilir; prod istifadə üçün lazım deyil.
-- Bot hazırda long polling ilə işləyir – webhook tələb etmir.
+- Long polling istifadə olunur (webhook tələb etmir)
+- `logs/` və yerli `*.db` faylları git-də izlənmir
+
+## Faydalı fayllar
+- `run.py` — giriş nöqtəsi; router-ları qoşur, DB cədvəllərini yaradır, start bildirişi göndərir
+- `handlers/` — modul-modul xüsusiyyətlər
+- `database/` — SQLite köməkçiləri
+- `pdfs/` — PDF resursları
+- `media/` — video və media faylları
+
+## Əlaqə
+Sual və ya təklif üçün: **@Rufat19**
+
+— Bu botu öz layihənə uyğun asanlıqla fərdiləşdirə bilərsən.
