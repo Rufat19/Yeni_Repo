@@ -44,11 +44,12 @@ def get_text(key: str) -> str:
             "Mövzular: qanunvericilik yenilikləri, hesabat nümunələri, praktiki məsləhətlər."
         ),
         "channel_sosial_muhit": (
-            "<b>Sosial Mühit — peşəkar bilik məkanı</b>\n\n"
-            "• Pensiyaların indeksləşməsi və kapital qaydaları\n"
-            "• Müavinət məbləğləri və göstəricilər\n"
-            "• Fərmanlar, qərarlar və yeniliklər\n\n"
-            "<i>İştirakçılar üçün mütəmadi yenilənən fayl bazası və sual-cavab.</i>"
+            "<b>🏷️ Sosial Mühit — peşəkar bilik məkanı</b>\n"
+            "━━━━━━━━━━━━\n"
+            "• Pensiya indeksləri və kapital qaydaları\n"
+            "• Müavinət məbləğləri, göstəricilər\n"
+            "• Fərmanlar, qərarlar, dəyişikliklər\n\n"
+            "<i>Fayl bazası + praktik nümunələr + sual-cavab — mütəmadi yenilənir.</i>"
         ),
     }
     return texts.get(key, "")

@@ -9,6 +9,7 @@ from aiogram.types import (
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.exceptions import TelegramBadRequest
+from aiogram.filters import Command
 import asyncio
 import random
 from typing import Dict, Set
@@ -223,7 +224,7 @@ async def cleanup_restrictions(bot, chat_id: int):
     game["restricted"].clear()
 
 # ===================== OYUN AXINI =====================
-@router.message(F.text == "/stop")
+@router.message(Command("stop"))
 async def cmd_stop(message: Message):
     chat_id = message.chat.id
     if chat_id in active_games:
@@ -232,9 +233,23 @@ async def cmd_stop(message: Message):
     else:
         await message.reply("Aktiv oyun yoxdur.")
 
-@router.message(F.text == "/game")
+@router.message(Command("game"))
 async def cmd_game(message: Message, state: FSMContext):
     chat_id = message.chat.id
+
+    # Özəl çatlarda oyun işləmir — istifadəçiyə istiqamət ver
+    if message.chat.type == "private":
+        kb = InlineKeyboardMarkup(
+            inline_keyboard=[
+                [InlineKeyboardButton(text="➕ Qrupa əlavə et", url=f"https://t.me/{(await message.bot.get_me()).username}?startgroup=true")]
+            ]
+        )
+        await message.answer(
+            "🕹️ Köstəbək oyunu yalnız qruplarda oynanır.\n\n"
+            "Qurubunuza əlavə edib /game yazaraq lobbini aça bilərsiniz.",
+            reply_markup=kb
+        )
+        return
     bot_id = (await message.bot.get_me()).id
     # Botun admin olub-olmadığını yoxla
     try:

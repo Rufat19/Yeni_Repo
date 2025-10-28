@@ -15,14 +15,14 @@ CHANNELS = {
         "title": "Sosial Mühit",
         "price": 0,
         "description": (
-            "📌 Sosial Mühit kanalı — Rüfət Babayev tərəfindən yaradılmış peşəkar platforma\n\n"
-            "Burada sosial sahə üzrə qanunvericiliklə bağlı bütün PDF sənədləri bir araya toplanıb. Kanal vasitəsilə siz:\n\n"
-            "✅ Pensiyaların illər üzrə indeksləşmə əmsallarını,\n"
-            "✅ İstifadə olunmayan kapitalın indeksləşmə qaydalarını,\n"
-            "✅ Təqaüdlərlə bağlı Fərman və tarixləri,\n"
-            "✅ Müavinətlərin məbləğləri və yenilənmiş göstəricilərini,\n"
-            "✅ Habelə edilmiş dəyişikliklərlə bağlı digər faydalı məlumatları tapa bilərsiniz.\n\n"
-            "🔗 Sosial sahədə çalışan mütəxəssislər üçün etibarlı bilik məkanı – Sosial Mühit"
+            "<b>🏷️ Sosial Mühit — peşəkar bilik məkanı</b>\n"
+            "━━━━━━━━━━━━\n"
+            "• Pensiyaların indeksləşmə əmsalları\n"
+            "• Kapitalın indeksləşmə qaydaları\n"
+            "• Fərmanlar, tarixlər, dəyişiklik xülasələri\n"
+            "• Müavinət məbləğləri və göstəricilər\n\n"
+            "💡 Fayl bazası, nümunələr, praktik məsləhətlər — mütəmadi yenilənir.\n"
+            "� Sosial sahədə çalışan hər kəs üçün etibarlı icma."
         )
     }
 }

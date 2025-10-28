@@ -122,7 +122,12 @@ async def start_menu(message: Message, state: FSMContext):
         video = FSInputFile("media/about_bot.mp4")
         await message.answer_video(
             video,
-        caption="🎬 Qısa təqdimat — botun əsas imkanlarına nəzər:",
+            caption=(
+                "<b>🎬 Qısa tanıtım</b>\n"
+                "Bu bot kim üçündür və nələr edə bilir?\n"
+                "<i>25 saniyəyə hər şey aydın olacaq. Səsi aç 😉</i>"
+            ),
+            parse_mode="HTML",
         )
     except Exception as e:
         print(f"[VIDEO ERROR] {e}")
@@ -130,9 +135,8 @@ async def start_menu(message: Message, state: FSMContext):
     # 🔸 3. 2 saniyə gözləyir və əsas menyunu göstərir
     await asyncio.sleep(2)
 
-    intro = "👇 İndi bir seçim edin — sürətli və rahat giriş üçün düymələr:" 
-    footer = f"\n\n🏷️ Versiya: {APP_VERSION}"
-    await message.answer(intro + footer, reply_markup=get_main_buttons())
+    intro = "👇 İndi bir seçim edin — sürətli və rahat giriş üçün düymələr:"
+    await message.answer(intro, reply_markup=get_main_buttons())
 
 
 # ✅ YENİLİKLƏR (lokal işlək versiya)
@@ -156,7 +160,7 @@ async def news_menu_callback(callback: CallbackQuery):
             for n in news_list
         ]
     )
-    await callback.message.answer("🆕 Bütün yeniliklər:", reply_markup=kb)
+    await callback.message.answer("🆕 Yeniliklər — son paylaşımlar:", reply_markup=kb)
     await callback.answer()
 
 
@@ -200,11 +204,13 @@ async def balance_menu_callback(callback: CallbackQuery):
 @router.callback_query(F.data == "game_info")
 async def game_info_callback(callback: CallbackQuery):
     text = (
-        "🕹️ Köstəbək — komanda oyunu\n\n"
-        "• Qrupda /game yazın (bot admin olmalıdır).\n"
-        f"• Min {3} nəfər tələb olunur.\n"
+        "🕹️ <b>Köstəbək — komanda oyunu</b>\n"
+        "━━━━━━━━━━━━\n"
+        "• Qrupda <code>/game</code> yazın (bot admin olmalıdır).\n"
+        f"• Minimum <b>{3}</b> nəfər tələb olunur.\n"
         "• Hamıya eyni söz, birinə fərqli söz düşür.\n"
-        "• Təsvir edin, şübhəlini tapın, səs verin!"
+        "• Təsvir edin, şübhəlini tapın, səs verin!\n\n"
+        "😉 Eğlənmək üçün dostlarınızı dəvət edin!"
     )
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
@@ -212,5 +218,5 @@ async def game_info_callback(callback: CallbackQuery):
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
     )
-    await callback.message.answer(text, reply_markup=kb)
+    await callback.message.answer(text, parse_mode="HTML", reply_markup=kb)
     await callback.answer()

@@ -5,10 +5,8 @@ import os
 
 router = Router()
 
-# Check if the PDF file exists
+# Fayl yolu
 pdf_path = "pdfs/MHT.pdf"
-pdf_exists = os.path.exists(pdf_path)
-print(pdf_exists)
 
 # 📌 PDF seçmək üçün menyu
 @router.callback_query(F.data == "get_pdf")
@@ -19,12 +17,22 @@ async def get_pdf_menu(callback: CallbackQuery):
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
         ]
     )
-    await callback.message.answer("Buna sənə məndən hədiyyə olsun:", reply_markup=keyboard)
+    await callback.message.answer("🎁 Kiçik hədiyyə: Müsahibəyə hazırlıq üçün faydalı bir PDF paylaşımım var.", reply_markup=keyboard)
     await callback.answer()
 
 # 📌 PDF göndərmək
 @router.callback_query(F.data == "pdf_musahibe")
 async def send_musahibe_pdf(callback: CallbackQuery):
-    pdf_path = "pdfs/MHT.pdf"
-    await callback.message.answer_document(FSInputFile(pdf_path), caption="PDF göndərildi ✅")
+    if not os.path.exists(pdf_path):
+        await callback.message.answer("❗ Fayl hazır deyil. Bir azdan yenidən yoxlayın.")
+        await callback.answer()
+        return
+    await callback.message.answer_document(
+        FSInputFile(pdf_path),
+        caption=(
+            "<b>Müsahibəyə hazırlıq texnikaları</b>\n"
+            "Qısa, praktik, faydalı — uğurlar! 🚀"
+        ),
+        parse_mode="HTML"
+    )
     await callback.answer()
