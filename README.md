@@ -103,3 +103,24 @@ Sual və ya problem yaranarsa, adminə müraciət edin:
 - Əlavə buttonlar, callback-lar və istifadəçi təcrübəsi üzrə düzəlişlər tətbiq olundu.
 
 **Botun kodunu və funksiyalarını öz ehtiyacına uyğun dəyişə bilərsən!**
+
+## Railway ilə Deploy
+
+Bu bot Railway üzərində “worker” kimi işləyir.
+
+- Python versiyası: `runtime.txt` → `python-3.12`
+- Başlatma əmri: `Procfile` → `worker: python run.py`
+- Lazım olan environment dəyişənləri:
+   - `BOT_TOKEN` – Telegram bot tokeni
+   - `ADMIN_ID` – admin Telegram ID (rəqəm)
+
+Addımlar:
+1. Bu layihəni yeni GitHub repoya push et (aşağıdakı “Repoya push” bölməsinə bax).
+2. Railway-də yeni Project aç və “Deploy from GitHub” seç.
+3. Repo seçildikdən sonra servisin tipini Worker olaraq saxla (Procfile avtomatik oxunur).
+4. Settings → Variables bölməsində `BOT_TOKEN` və `ADMIN_ID` əlavə et.
+5. Deploy et – Railway `requirements.txt` faylından asılılıqları quracaq və `python run.py` ilə botu işə salacaq.
+
+Qeydlər:
+- Lokal `logs/` və `*.db` faylları `.gitignore` ilə ignor edilir; prod istifadə üçün lazım deyil.
+- Bot hazırda long polling ilə işləyir – webhook tələb etmir.

@@ -34,7 +34,7 @@ class ReviewForm(StatesGroup):
     waiting_rating = State()
     waiting_text = State()
 
-def save_review(user_id, rating, text, reply=None):
+def save_review(user_id, rating, text, username=None, full_name=None, reply=None):
     reviews = []
     if os.path.exists(REVIEWS_FILE):
         with open(REVIEWS_FILE, "r", encoding="utf-8") as f:
@@ -43,6 +43,8 @@ def save_review(user_id, rating, text, reply=None):
         "user_id": user_id,
         "rating": rating,
         "text": text,
+        "username": username,
+        "full_name": full_name,
         "reply": reply
     })
     with open(REVIEWS_FILE, "w", encoding="utf-8") as f:
@@ -90,7 +92,9 @@ async def review_text(message: Message, state: FSMContext):
     rating = data.get("rating")
     text = message.text
     user_id = message.from_user.id if message.from_user else "unknown"
-    save_review(user_id, rating, text)
+    username = message.from_user.username if message.from_user else None
+    full_name = message.from_user.full_name if message.from_user else None
+    save_review(user_id, rating, text, username=username, full_name=full_name)
     main_menu_kb = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
@@ -103,21 +107,35 @@ async def review_text(message: Message, state: FSMContext):
 async def show_reviews_callback(callback: CallbackQuery, state: FSMContext):
     import asyncio
     reviews = get_all_reviews()
+    kb = InlineKeyboardMarkup(
+        inline_keyboard=[[InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]]
+    )
     if not reviews:
         if callback.message:
-            msg_obj = await callback.message.answer("Hələ rəy yoxdur.")
-            await asyncio.sleep(10)
-            await msg_obj.delete()
+            msg_obj = await callback.message.answer("📭 Hələ rəy yoxdur.", reply_markup=kb)
+            await asyncio.sleep(60)
+            try:
+                await msg_obj.delete()
+            except Exception:
+                pass
     else:
-        msg = ""
+        lines = []
         for idx, r in enumerate(reviews, 1):
-            stars = "⭐" * r["rating"]
-            reply = f"\nAdmin cavabı: {r['reply']}" if r.get("reply") else ""
-            msg += f"{idx}) {stars}\n{r['text']}{reply}\n\n"
+            stars = "⭐" * int(r.get("rating", 0))
+            name = r.get("full_name") or ("@" + r.get("username") if r.get("username") else str(r.get("user_id", "")))
+            reply_txt = r.get("reply")
+            block = f"{idx}) {stars} — {name}\n{r.get('text','')}"
+            if reply_txt:
+                block += f"\n🗨️ Admin: {reply_txt}"
+            lines.append(block)
+        msg_text = "\n\n".join(lines)
         if callback.message:
-            msg_obj = await callback.message.answer(msg)
-            await asyncio.sleep(10)
-            await msg_obj.delete()
+            msg_obj = await callback.message.answer(msg_text, reply_markup=kb)
+            await asyncio.sleep(60)
+            try:
+                await msg_obj.delete()
+            except Exception:
+                pass
     await callback.answer()
 
 # Admin cavab vermək üçün (ADMIN_ID ilə yoxla)
