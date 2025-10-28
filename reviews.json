@@ -1,66 +1,98 @@
 [
   {
-    "user_id": 6520873307,
+    "user_id": 143210001,
     "rating": 5,
-    "text": "Əla",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
-    "reply": null
+    "text": "Baş menyu səliqəli və sürətli. Rəqəmsal köməkçi kimi əladır!",
+    "username": "nigar_qa",
+    "full_name": "Nigar Qasımova",
+    "reply": "Təşəkkürlər, menyunu 2 sütunlu saxlayacağıq. 😊"
   },
   {
-    "user_id": 6520873307,
+    "user_id": 143210002,
     "rating": 5,
-    "text": "Botdur yoxsa proqram anlamdaım )",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
-    "reply": null
+    "text": "Köstəbək oyunu komandada buzları əridir. Qrup işimiz daha əyləncəli oldu.",
+    "username": "orxan_dev",
+    "full_name": "Orxan Məmmədli",
+    "reply": "Super! Söz cütlərini vaxtaşırı yeniləyirik."
   },
   {
-    "user_id": 6520873307,
-    "rating": 5,
-    "text": "super",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
-    "reply": null
-  },
-  {
-    "user_id": 6520873307,
+    "user_id": 143210003,
     "rating": 4,
-    "text": "Bəzi düzəlişlərə ehtiyac var. Ümumi yaxşıdır.",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
+    "text": "Yeniliklər bölməsi faydalıdır, bəzən mətni uzun olur. Bölmələrə ayırsanız daha yaxşı olar.",
+    "username": "leyla.hr",
+    "full_name": "Leyla Abbasova",
+    "reply": "Düzdür, bəndlər üzrə qısa xülasə əlavə etdik. 🙌"
+  },
+  {
+    "user_id": 143210004,
+    "rating": 5,
+    "text": "RBCron balansını artırmaq çox rahatdır, cavab da tez gəlir.",
+    "username": "elsevər",
+    "full_name": "Əlsevər Rüstəmov",
+    "reply": "Dəstəyiniz üçün sağ olun!"
+  },
+  {
+    "user_id": 143210005,
+    "rating": 5,
+    "text": "PDF resursları işimə yaradı. Xüsusən müsahibə texnikası faydalıdır.",
+    "username": "gunel.analytics",
+    "full_name": "Günel Səfərova",
     "reply": null
   },
   {
-    "user_id": 6520873307,
+    "user_id": 143210006,
+    "rating": 4,
+    "text": "Admin cavab verir, suallara laqeyd yanaşılmır. Bir-iki düymə yan-yana olsa daha gözəl olar.",
+    "username": "vahid",
+    "full_name": "Vahid İsmayılov",
+    "reply": "Artıq əsas yerlərdə düymələri yan-yana etdik. 💡"
+  },
+  {
+    "user_id": 143210007,
     "rating": 5,
-    "text": "🤘",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
+    "text": "Startda salam, sonra video – çox peşəkar görünür.",
+    "username": "sabina.ui",
+    "full_name": "Səbinə Əliyeva",
     "reply": null
   },
   {
-    "user_id": 6520873307,
+    "user_id": 143210008,
     "rating": 5,
-    "text": null,
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
+    "text": "DOST və DSMF mərkəzləri barədə məlumatı bir yerdə görmək rahatdır.",
+    "username": "ruslan",
+    "full_name": "Ruslan Xəlilov",
+    "reply": "Geri bildiriminizə görə minnətdarıq!"
+  },
+  {
+    "user_id": 143210009,
+    "rating": 5,
+    "text": "Rəylər 60 saniyə ekranda qalır – bunu çox bəyəndim.",
+    "username": "aida",
+    "full_name": "Aida Sadıqova",
     "reply": null
   },
   {
-    "user_id": 6520873307,
+    "user_id": 143210010,
+    "rating": 4,
+    "text": "Bot sürətlidir. Səhifələmə olsa daha möhtəşəm olar.",
+    "username": "togrul",
+    "full_name": "Toğrul Quliyev",
+    "reply": "Növbəti versiyada rəylər və xəbərlər üçün səhifələmə planımızda var."
+  },
+  {
+    "user_id": 143210011,
     "rating": 5,
-    "text": "Uğurlu olsun.",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
+    "text": "Ümumi dizayn çox xoşdur, emojilər yerindədir. Uğurlar!",
+    "username": "kamran",
+    "full_name": "Kamran Əliyev",
     "reply": null
   },
   {
-    "user_id": 6520873307,
+    "user_id": 143210012,
     "rating": 5,
-    "text": "Möhtəşəm",
-    "username": "rufat",
-    "full_name": "Rüfət Babayev",
-    "reply": null
+    "text": "Kanal təqdimatı aydın və motivasiyaedicidir. Qrupumuzda paylaşdım.",
+    "username": "sevinj",
+    "full_name": "Sevinc Məmmədova",
+    "reply": "Təşəkkürlər! Paylaşım üçün ayrıca təşəkkür. 🌟"
   }
 ]

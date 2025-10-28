@@ -10,34 +10,45 @@ router = Router()
 def get_text(key: str) -> str:
     texts = {
         "about_bot_info": (
-            "<b>DSMF və DOST Mərkəzləri — Sosial xidmətlərin bir pəncərəsi!</b>\n\n"
-            "🏛️ <b>Dövlət Sosial Müdafiə Fondu (DSMF)</b> — vətəndaşlara pensiya, sosial müavinət, sığorta və fərdi uçotla bağlı xidmətlər təqdim edən əsas qurumdur.\n\n"
-            "📍 <b>Bəzi əsas qəbul mərkəzləri:</b>\n"
-            "• Sosial Ödənişlərin Təyinatı üzrə Mərkəzi Filial — Bakı, H. Əliyev küç. 143\n"
-            "• Sosial Sığorta və Fərdi Uçot Mərkəzi — Bakı, H. Əliyev küç. 135A\n"
-            "• Abşeron-Xızı regional filialı — Sumqayıt, Z. Hacıyev küç. 266\n"
-            "• Qarabağ regional filialı — Bərdə, İ. Qayıbov küç. 15\n"
-            "• Dağlıq Şirvan regional filialı — Şamaxı, Aşıq Məmmədağa küç. 54\n\n"
-            "🔗 Əlavə məlumat üçün: <a href='https://dsmf.gov.az/az/muraciet/elaqe'>dsmf.gov.az</a>\n\n"
-            "🤝 <b>DOST Mərkəzləri</b> — sosial müdafiə, məşğulluq, əlillik, pensiya və digər xidmətlərin <i>bir pəncərə</i> sistemi ilə göstərildiyi mərkəzlərdir.\n\n"
+            "<b>DSMF və DOST Mərkəzləri — Sosial xidmətlər bir pəncərədə!</b>\n\n"
+            "🏛️ <b>DSMF</b> — pensiya, sosial müavinət, sığorta və fərdi uçotla bağlı xidmətlər.\n\n"
+            "📍 <b>Əsas qəbul mərkəzləri (seçilmiş):</b>\n"
+            "• Sosial Ödənişlərin Təyinatı Mərkəzi — Bakı, H. Əliyev 143\n"
+            "• Sosial Sığorta və Fərdi Uçot — Bakı, H. Əliyev 135A\n"
+            "• Abşeron-Xızı regional — Sumqayıt, Z. Hacıyev 266\n"
+            "• Qarabağ regional — Bərdə, İ. Qayıbov 15\n"
+            "• Dağlıq Şirvan regional — Şamaxı, Aşıq Məmmədağa 54\n\n"
+            "🔗 <a href='https://dsmf.gov.az/az/muraciet/elaqe'>dsmf.gov.az</a>\n\n"
+            "🤝 <b>DOST</b> — sosial müdafiə, məşğulluq, əlillik, pensiya və digər xidmətlər üçün <i>bir pəncərə</i>.\n\n"
             "🏢 <b>Bakı DOST Mərkəzləri:</b>\n"
             "• 1-saylı DOST — Yasamal, İ. Qutqaşınlı 86\n"
-            "• 2-saylı DOST — Xəzər, Şüvəlan, A. İldırım 30b\n"
+            "• 2-saylı DOST — Şüvəlan, A. İldırım 30b\n"
             "• 3-saylı DOST — Nizami, H. Əliyev pr. 183b\n"
             "• 4-saylı DOST — Binəqədi, Z. Bünyadov 31-03\n"
             "• 5-saylı DOST — Xətai, Mehdi Mehdizadə 31\n"
             "• Abşeron DOST — Xırdalan, Bakı-Sumqayıt şossesi 7-ci km\n"
             "• Qarabağ Regional DOST — Bərdə, Ü. Hacıbəyov küç.\n\n"
-            "🕘 <b>İş saatları:</b> Bazar ertəsi–Cümə, 09:00–18:00\n"
+            "🕘 <b>İş saatları:</b> B.e.–Cümə, 09:00–18:00\n"
             "📞 <b>Çağrı mərkəzi:</b> 142\n"
             "🌐 <a href='https://dost.gov.az/dost-centers'>dost.gov.az</a>\n\n"
-            "💡 <b>Qısa xülasə:</b>\n"
+            "💡 <b>Niyə vacibdir?</b>\n"
             "• DSMF – ödəniş və sığorta xidmətləri\n"
-            "• DOST – vətəndaş xidmətləri (pensiya, müavinət, məşğulluq, əlillik və s.)\n"
-            "• Hər iki sistem — şəffaf, sürətli və vətəndaş yönümlü xidmət üçün yaradılıb.\n\n"
-            "<b>Sosial Mühit — Peşəkar inkişafına zəmanət verir 🏆</b>"
-        )
-
+            "• DOST – pensiya, müavinət, məşğulluq, əlillik və s. üçün sürətli xidmət\n"
+            "• Şəffaflıq, operativlik və vətəndaş yönümlülük prinsipi\n\n"
+            "<b>Sosial Mühit — Peşəkar inkişaf məkanı 🏆</b>"
+        ),
+        "about_channels_info": (
+            "<b>Faydalı kanallar seçimi</b>\n\n"
+            "Aşağıdakı kanallar sosial sahədə gündəlik işinizi asanlaşdıracaq.\n"
+            "Mövzular: qanunvericilik yenilikləri, hesabat nümunələri, praktiki məsləhətlər."
+        ),
+        "channel_sosial_muhit": (
+            "<b>Sosial Mühit — peşəkar bilik məkanı</b>\n\n"
+            "• Pensiyaların indeksləşməsi və kapital qaydaları\n"
+            "• Müavinət məbləğləri və göstəricilər\n"
+            "• Fərmanlar, qərarlar və yeniliklər\n\n"
+            "<i>İştirakçılar üçün mütəmadi yenilənən fayl bazası və sual-cavab.</i>"
+        ),
     }
     return texts.get(key, "")
 
