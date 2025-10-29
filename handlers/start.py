@@ -43,7 +43,7 @@ def get_main_buttons():
             InlineKeyboardButton(text="🆕 Yeniliklər", callback_data="news_menu"),
         ],
         [
-            InlineKeyboardButton(text="🌍 Dünya Görüşü (quiz)", callback_data="quiz_world_menu"),
+            InlineKeyboardButton(text="🌍 Dünya Görüşü", callback_data="quiz_world_menu"),
             InlineKeyboardButton(text="🧾 Sosial ödənişlər", callback_data="quiz"),
         ],
         [
@@ -51,7 +51,11 @@ def get_main_buttons():
             InlineKeyboardButton(text="📄 Müsahibə Texnikası", callback_data="get_pdf"),
         ],
         [
-            InlineKeyboardButton(text="💳 RBCron balansım", callback_data="balance_menu"),
+            InlineKeyboardButton(text="� Excel Dərsləri", callback_data="excel_lessons_menu"),
+            InlineKeyboardButton(text="📊 Power BI Sertifikat", callback_data="cert_menu"),
+        ],
+        [
+            InlineKeyboardButton(text="�💳 RBCron balansım", callback_data="balance_menu"),
             InlineKeyboardButton(text="🌟 İstifadəçi rəyləri", callback_data="reviews_menu"),
         ],
         [
