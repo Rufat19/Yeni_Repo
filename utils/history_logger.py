@@ -1,9 +1,10 @@
 import json
 import os
 from datetime import datetime
+from config import DATA_DIR
 
 
-HISTORY_PATH = os.path.join("data", "user_history.json")
+HISTORY_PATH = os.path.join(DATA_DIR, "user_history.json")
 
 
 def _ensure_dir():
