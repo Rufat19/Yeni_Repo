@@ -67,9 +67,15 @@ def get_main_buttons():
 async def start_menu(message: Message, state: FSMContext):
     if message.chat.type != "private":
         if message.from_user is not None:
+            try:
+                me = await message.bot.get_me()
+                username = getattr(me, "username", "")
+                open_link = f"https://t.me/{username}" if username else "https://t.me/"
+            except Exception:
+                open_link = "https://t.me/"
             await message.reply(
                 "ℹ️ Botun əsas menyusunu açmaq üçün şəxsi mesajda (/start) yazın.\n\n👉 "
-                f"<a href='https://t.me/{message.bot.username}'>Botu aç</a>",
+                f"<a href='{open_link}'>Botu aç</a>",
                 parse_mode="HTML"
             )
         return
@@ -212,9 +218,15 @@ async def game_info_callback(callback: CallbackQuery):
         "• Təsvir edin, şübhəlini tapın, səs verin!\n\n"
         "😉 Eğlənmək üçün dostlarınızı dəvət edin!"
     )
+    try:
+        me = await callback.bot.get_me()
+        username = getattr(me, "username", "")
+        startgroup_url = f"https://t.me/{username}?startgroup=true" if username else "https://t.me/"
+    except Exception:
+        startgroup_url = "https://t.me/"
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Qrupa əlavə et", url=f"https://t.me/{callback.bot.username}?startgroup=true")],
+            [InlineKeyboardButton(text="Qrupa əlavə et", url=startgroup_url)],
             [InlineKeyboardButton(text="� İctimai qrupda oyna", url="https://t.me/kostebeksen")],
             [InlineKeyboardButton(text="�🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
