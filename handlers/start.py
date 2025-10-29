@@ -52,7 +52,7 @@ def get_main_buttons():
         ],
         [
             InlineKeyboardButton(text="💳 RBCron balansım", callback_data="balance_menu"),
-            InlineKeyboardButton(text="📄 Müsahibə Texnikası", callback_data="get_pdf"),
+            InlineKeyboardButton(text="📄 PDF Yüklə", callback_data="get_pdf"),
         ],
         [
             InlineKeyboardButton(text="🌟 İstifadəçi rəyləri", callback_data="reviews_menu"),
