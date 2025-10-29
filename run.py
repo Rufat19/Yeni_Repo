@@ -52,10 +52,13 @@ async def main():
     db_dir = os.path.dirname(DB_PATH)
     if db_dir:
         os.makedirs(db_dir, exist_ok=True)
+        logger.info(f"Database directory created/verified: {db_dir}")
 
     # Database inicializasiya
+    logger.info(f"Initializing database at: {DB_PATH}")
     init_db()
     create_tables()
+    logger.info("Database tables created successfully ✅")
     # Seed news if empty
     try:
         existing = get_all_news()
@@ -126,5 +129,11 @@ if __name__ == "__main__":
     try:
         print("🚀 Railway-də bot işə düşür...")
         asyncio.run(main())
+    except KeyboardInterrupt:
+        print("⚠️ Bot dayandırıldı (Keyboard Interrupt)")
     except Exception as e:
+        import traceback
         print(f"❌ Botda xəta baş verdi: {e}")
+        print(f"📋 Stack trace:")
+        traceback.print_exc()
+        raise  # Re-raise to ensure Railway sees the error
