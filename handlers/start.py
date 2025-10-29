@@ -48,7 +48,7 @@ def get_main_buttons():
         ],
         [
             InlineKeyboardButton(text="📊 Excel Dərsləri", callback_data="excel_lessons_menu"),
-            InlineKeyboardButton(text="📊 Power BI Sertifikat", callback_data="cert_menu"),
+            InlineKeyboardButton(text="📊 Power BI Təlimi", callback_data="cert_menu"),
         ],
         [
             InlineKeyboardButton(text="💳 RBCron balansım", callback_data="balance_menu"),
