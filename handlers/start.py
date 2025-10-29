@@ -215,7 +215,8 @@ async def game_info_callback(callback: CallbackQuery):
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="Qrupa əlavə et", url=f"https://t.me/{callback.bot.username}?startgroup=true")],
-            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
+            [InlineKeyboardButton(text="� İctimai qrupda oyna", url="https://t.me/kostebeksen")],
+            [InlineKeyboardButton(text="�🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
     )
     await callback.message.answer(text, parse_mode="HTML", reply_markup=kb)

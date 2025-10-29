@@ -239,16 +239,27 @@ async def cmd_game(message: Message, state: FSMContext):
 
     # Özəl çatlarda oyun işləmir — istifadəçiyə istiqamət ver
     if message.chat.type == "private":
+        me = await message.bot.get_me()
         kb = InlineKeyboardMarkup(
             inline_keyboard=[
-                [InlineKeyboardButton(text="➕ Qrupa əlavə et", url=f"https://t.me/{(await message.bot.get_me()).username}?startgroup=true")]
+                [
+                    InlineKeyboardButton(text="➕ Qrupa əlavə et", url=f"https://t.me/{getattr(me, 'username', 'bot')}?startgroup=true"),
+                ],
+                [
+                    InlineKeyboardButton(text="🎮 İctimai qrupda oyna", url="https://t.me/kostebeksen"),
+                ],
             ]
         )
-        await message.answer(
-            "🕹️ Köstəbək oyunu yalnız qruplarda oynanır.\n\n"
-            "Qurubunuza əlavə edib /game yazaraq lobbini aça bilərsiniz.",
-            reply_markup=kb
+        text = (
+            "�️‍♂️ <b>Köstəbək</b> — əyləncəli komanda oyunu!\n"
+            "━━━━━━━━━━━━\n"
+            "• Hər kəsə eyni söz, birinə <i>fərqli</i> söz düşür.\n"
+            "• Sözünü birbaşa demə — təsvir et, şübhə yarat!\n"
+            "• Sonda səs verib köstəbəyi tapmağa çalışın.\n\n"
+            "▶️ Oynamaq üçün botu <b>qrupa admin</b> kimi əlavə et və <code>/game</code> yaz.\n"
+            "Və ya elə indi ictimai qrupda qoşul: <i>hamı üçün açıq</i>."
         )
+        await message.answer(text, parse_mode="HTML", reply_markup=kb)
         return
     bot_id = (await message.bot.get_me()).id
     # Botun admin olub-olmadığını yoxla

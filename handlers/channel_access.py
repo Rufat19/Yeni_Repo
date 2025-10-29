@@ -65,7 +65,7 @@ async def channel_info_callback(callback: CallbackQuery):
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
         ]
     )
-    await callback.message.answer(msg, reply_markup=keyboard)
+    await callback.message.answer(msg, parse_mode="HTML", reply_markup=keyboard)
     await callback.answer()
 
 @router.callback_query(lambda c: c.data in ["access_sosial_muhit"])
