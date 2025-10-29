@@ -7,6 +7,8 @@ import datetime
 from collections import Counter
 import os
 from datetime import datetime, timedelta
+from aiogram.filters import CommandObject
+from utils.history_logger import get_user_history, summarize_user_history
 
 router = Router()
 
@@ -115,3 +117,51 @@ async def admin_panel(message: Message, state: FSMContext):
     except Exception as e:
         await message.answer(f"Fəaliyyət qeydləri oxunarkən xəta baş verdi: {e}")
         return
+
+
+@router.message(Command(commands=["history"]))
+async def user_history_command(message: Message, command: CommandObject):
+    """Admin-only: show RBCron balance history for a specific user id.
+
+    Usage: /history <telegram_user_id>
+    """
+    if not message.from_user or message.from_user.id != ADMIN_ID:
+        await message.answer("Bu funksiya yalnız admin üçündür.")
+        return
+
+    arg = (command.args or "").strip()
+    if not arg or not arg.isdigit():
+        await message.answer("İstifadə: /history <telegram_user_id>")
+        return
+
+    uid = int(arg)
+    events = get_user_history(uid)
+    summary = summarize_user_history(uid)
+
+    if not events:
+        await message.answer(f"🧾 İstifadəçi {uid} üçün heç bir balans əməliyyatı qeydi yoxdur.")
+        return
+
+    # Build summary
+    text = (
+        f"🧾 <b>RBCron tarixçə</b> — <code>{uid}</code>\n"
+        f"Qeyd sayı: <b>{summary['count']}</b>\n"
+        f"Toplam artırılan: <b>{summary['total_topup']}</b>\n"
+        f"Toplam xərclənən: <b>{summary['total_spent']}</b>\n"
+        f"İlk qeyd: {summary['first_ts'] or '-'}\n"
+        f"Son qeyd: {summary['last_ts'] or '-'}\n\n"
+        f"Son 20 əməliyyat:\n"
+    )
+
+    # Show last 20 events
+    for e in events[-20:]:
+        ts = e.get("ts")
+        delta = e.get("delta")
+        prev_v = e.get("prev")
+        new_v = e.get("new")
+        reason = e.get("reason") or "-"
+        source = e.get("source") or "-"
+        sign = "+" if delta and delta > 0 else ""
+        text += f"• {ts} — {sign}{delta} ( {prev_v} → {new_v} )  [{source}]  reason: {reason}\n"
+
+    await message.answer(text, parse_mode="HTML")
