@@ -145,7 +145,7 @@ async def order_bot_decline(callback: CallbackQuery, state: FSMContext):
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")]
         ]
     )
-    await callback.message.answer("ℹ️ Sifariş ləğv edildi. Balansınızdan heç bir vəsait çıxılmadı.", reply_markup=keyboard)
+    await callback.message.answer("ℹ Sifariş ləğv edildi. Balansınızdan heç bir vəsait çıxılmadı.", reply_markup=keyboard)
     await state.clear()
     await callback.answer()
 
@@ -218,7 +218,7 @@ async def order_bot_admin_reason(message: Message, state: FSMContext):
         parse_mode="HTML",
         reply_markup=main_menu_keyboard
     )
-    await message.answer("ℹ️ Rədd səbəbi istifadəçiyə göndərildi və depozit qaytarıldı.", reply_markup=main_menu_keyboard)
+    await message.answer("ℹ Rədd səbəbi istifadəçiyə göndərildi və depozit qaytarıldı.", reply_markup=main_menu_keyboard)
     await state.clear()
 
 

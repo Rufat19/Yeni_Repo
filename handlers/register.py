@@ -51,7 +51,7 @@ async def start_menu(message: Message, state: FSMContext):
                 InlineKeyboardButton(text="📢 Kanalların seçimi", callback_data="channels")
             ],
             [
-                InlineKeyboardButton(text="ℹ️ Kanallar haqqında", callback_data="about_channels"),
+                InlineKeyboardButton(text="ℹ Kanallar haqqında", callback_data="about_channels"),
                 InlineKeyboardButton(text="📄 PDF almaq", callback_data="get_pdf")
             ]
         ]

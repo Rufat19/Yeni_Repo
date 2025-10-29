@@ -154,7 +154,7 @@ async def edit_lobby_message(bot, chat_id: int):
     players_txt = await list_text_players(game["players"])
     kb = await build_lobby_keyboard(game["creator_id"], len(game["players"]))
     text = (
-        "🕹️ <b>Köstəbək</b> — Lobbi açıqdır!\n\n"
+        "🎮 <b>Köstəbək</b> — Lobbi açıqdır!\n\n"
         f"<b>Yaradıcı:</b> {game['players'].get(game['creator_id'], '—')}\n"
         f"<b>İştirakçılar ({len(game['players'])}/{MAX_PLAYERS}):</b>\n{players_txt}\n\n"
         "Qoşul: eyni söz hamıya, fərqli söz birinə. Təsvir et, ifşa et, səs ver!"
@@ -297,7 +297,7 @@ async def cmd_game(message: Message, state: FSMContext):
 
     kb = await build_lobby_keyboard(creator_id, 1)
     msg = await message.answer(
-        "🕹️ <b>Köstəbək</b> oyununa xoş gəldiniz!\n\n"
+        "🎮 <b>Köstəbək</b> oyununa xoş gəldiniz!\n\n"
         "➕ Qoşul düyməsinə bas, \n"
         f"✅ Ready — yalnız yaradıcının ixtiyarındadır (min {MIN_PLAYERS} nəfər).",
         reply_markup=kb,
