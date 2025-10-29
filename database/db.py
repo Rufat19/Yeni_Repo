@@ -40,16 +40,6 @@ def create_tables():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-        # Excel lessons access table
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS excel_access (
-                user_id INTEGER PRIMARY KEY,
-                full_name TEXT,
-                phone TEXT,
-                access_granted INTEGER DEFAULT 1,
-                payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
         conn.commit()
 
 

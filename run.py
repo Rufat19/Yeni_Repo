@@ -7,7 +7,7 @@ import background_tasks
 from handlers import (
     start, fast_test, about, admin, quiz, quiz_world,
     order_bot, cert, balance, payment, review, pdf,
-    news_handler, game, channel_access, misc, excel_lessons
+    news_handler, game, channel_access, misc
 )
 from handlers.db_utils import init_db
 from database.db import create_tables
@@ -108,8 +108,7 @@ async def main():
         start.router, fast_test.router, about.router, admin.router,
         quiz.router, quiz_world.router, order_bot.router, cert.router,
         balance.router, payment.payment_router, review.router, pdf.router,
-        news_handler.router, game.router, channel_access.router, misc.misc_router,
-        excel_lessons.router
+        news_handler.router, game.router, channel_access.router, misc.misc_router
     ]:
         dp.include_router(router)
 
