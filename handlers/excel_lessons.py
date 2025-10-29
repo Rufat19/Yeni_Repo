@@ -133,8 +133,20 @@ async def process_phone(message: Message, state: FSMContext):
         
         # Show folders directly
         try:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info(f"Excel lessons dir: {EXCEL_LESSONS_DIR}")
+            logger.info(f"Current working directory: {os.getcwd()}")
+            logger.info(f"Excel dir exists: {os.path.exists(EXCEL_LESSONS_DIR)}")
+            
+            if not os.path.exists(EXCEL_LESSONS_DIR):
+                await message.answer(f"❌ Dərslik qovluğu tapılmadı: {EXCEL_LESSONS_DIR}\nZəhmət olmasa adminlə əlaqə saxlayın.")
+                return
+                
             folders = [d for d in os.listdir(EXCEL_LESSONS_DIR) if os.path.isdir(os.path.join(EXCEL_LESSONS_DIR, d))]
             folders.sort()
+            
+            logger.info(f"Found {len(folders)} folders: {folders}")
 
             if not folders:
                 await message.answer("⚠️ Hazırda heç bir dərs materialı yoxdur.")
@@ -150,8 +162,11 @@ async def process_phone(message: Message, state: FSMContext):
                 "📚 Zəhmət olmasa, bir dərs qovluğu seçin:",
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard)
             )
-        except FileNotFoundError:
-            await message.answer("❌ Dərslik qovluğu tapılmadı. Zəhmət olmasa adminlə əlaqə saxlayın.")
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error showing folders: {e}", exc_info=True)
+            await message.answer(f"❌ Xəta baş verdi: {e}\nZəhmət olmasa adminlə əlaqə saxlayın.")
     else:
         await message.answer("❌ Balansınız kifayət deyil. Zəhmət olmasa balansınızı artırın.")
         await state.clear()
@@ -168,8 +183,18 @@ async def show_folders_callback(callback: CallbackQuery):
 async def show_folders_menu(callback: CallbackQuery):
     """Display available lesson folders."""
     try:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"show_folders_menu called - Excel dir: {EXCEL_LESSONS_DIR}, exists: {os.path.exists(EXCEL_LESSONS_DIR)}")
+        
+        if not os.path.exists(EXCEL_LESSONS_DIR):
+            await callback.message.edit_text(f"❌ Dərslik qovluğu tapılmadı: {EXCEL_LESSONS_DIR}")
+            return
+            
         folders = [d for d in os.listdir(EXCEL_LESSONS_DIR) if os.path.isdir(os.path.join(EXCEL_LESSONS_DIR, d))]
         folders.sort()
+        
+        logger.info(f"Found folders: {folders}")
 
         if not folders:
             await callback.message.edit_text("⚠️ Hazırda heç bir dərs materialı yoxdur.")
@@ -186,8 +211,11 @@ async def show_folders_menu(callback: CallbackQuery):
             reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard)
         )
 
-    except FileNotFoundError:
-        await callback.message.edit_text("❌ Dərslik qovluğu tapılmadı. Zəhmət olmasa adminlə əlaqə saxlayın.")
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error in show_folders_menu: {e}", exc_info=True)
+        await callback.message.edit_text(f"❌ Xəta: {e}")
 
 # List files in a selected folder
 @router.callback_query(F.data.startswith("list_files:"))
