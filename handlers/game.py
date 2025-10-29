@@ -251,7 +251,7 @@ async def cmd_game(message: Message, state: FSMContext):
             ]
         )
         text = (
-            "�️‍♂️ <b>Köstəbək</b> — əyləncəli komanda oyunu!\n"
+            "🕵️‍♂️ <b>Köstəbək</b> — əyləncəli komanda oyunu!\n"
             "━━━━━━━━━━━━\n"
             "• Hər kəsə eyni söz, birinə <i>fərqli</i> söz düşür.\n"
             "• Sözünü birbaşa demə — təsvir et, şübhə yarat!\n"

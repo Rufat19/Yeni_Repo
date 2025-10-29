@@ -22,7 +22,7 @@ CHANNELS = {
             "• Fərmanlar, tarixlər, dəyişiklik xülasələri\n"
             "• Müavinət məbləğləri və göstəricilər\n\n"
             "💡 Fayl bazası, nümunələr, praktik məsləhətlər — mütəmadi yenilənir.\n"
-            "� Sosial sahədə çalışan hər kəs üçün etibarlı icma."
+            "🌐 Sosial sahədə çalışan hər kəs üçün etibarlı icma."
         )
     }
 }

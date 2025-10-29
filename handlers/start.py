@@ -55,7 +55,7 @@ def get_main_buttons():
             InlineKeyboardButton(text="🌟 İstifadəçi rəyləri", callback_data="reviews_menu"),
         ],
         [
-            InlineKeyboardButton(text="🛠️ Bot sifarişi (depozit)", callback_data="order_bot"),
+            InlineKeyboardButton(text="🛠️ Bot sifarişi", callback_data="order_bot"),
             InlineKeyboardButton(text="ℹ️ Qəbul Mərkəzləri", callback_data="about_bot"),
         ],
     ]
@@ -202,7 +202,16 @@ async def balance_menu_callback(callback: CallbackQuery):
             [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
     )
-    await callback.message.answer("RBCron balans əməliyyatları:", reply_markup=kb)
+    text = (
+        "💡 <b>RBCron nədir?</b>\n"
+        "RBCron — bot daxilində əməliyyat valyutasıdır. Testlər, quizlər, ödənişli kanallar və premium funksiyalarda istifadə olunur.\n\n"
+        "🎯 <b>Niyə balansı artırmaq sərfəlidir?</b>\n"
+        "• Çox yüklədikcə vahid qiymət <b>daha ucuz</b> olur.\n"
+        "• Testlər, quizlər və digər ödəniş tələb edən bölmələrdə <b>endirimli istifadə</b>.\n"
+        "• Kampaniya və xüsusi paketlər üçün hazır balans.\n\n"
+        "👇 Aşağıdan seçim edin: balansınıza baxın və ya artırın."
+    )
+    await callback.message.answer(text, parse_mode="HTML", reply_markup=kb)
     await callback.answer()
 
 
@@ -227,8 +236,8 @@ async def game_info_callback(callback: CallbackQuery):
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="Qrupa əlavə et", url=startgroup_url)],
-            [InlineKeyboardButton(text="� İctimai qrupda oyna", url="https://t.me/kostebeksen")],
-            [InlineKeyboardButton(text="�🏠 Əsas menyuya qayıt", callback_data="main_menu")],
+            [InlineKeyboardButton(text="🎮 İctimai qrupda oyna", url="https://t.me/kostebeksen")],
+            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
         ]
     )
     await callback.message.answer(text, parse_mode="HTML", reply_markup=kb)

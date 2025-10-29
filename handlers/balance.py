@@ -89,6 +89,7 @@ async def fill_balance_callback(callback: CallbackQuery):
                 "• 250 RBCron — 5 AZN\n"
                 "• 750 RBCron — 10 AZN\n"
                 "• 1500 RBCron — 20 AZN\n\n"
+                "💡 <i>Qeyd:</i> Daha böyük paketlərdə hər RBCron-un vahid qiyməti <b>daha sərfəlidir</b>.\n\n"
                 f"💰 Cari balansınız: <b>{balance}</b> RBCron\n\n"
                 "Ödəniş etdikdən sonra qəbzin şəklini bu söhbətə göndərin (foto).\n"
                 "Biz qəbzi nəzərdən keçirib, təsdiq etdikdə balansınızı artıracağıq — adətən 24 saat içində.\n\n"

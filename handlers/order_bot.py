@@ -46,6 +46,29 @@ def save_order_to_file(user_id: int, full_name: str, phone: str, details: str):
 # --- sifariş başlanğıcı ---
 @router.callback_query(F.data == "order_bot")
 async def order_bot_start(callback: CallbackQuery, state: FSMContext):
+    info = (
+        "🤖 <b>Bot sifarişi haqqında</b>\n"
+        "━━━━━━━━━━━━\n"
+        "Botlar kimlər üçün və nə üçündür?\n\n"
+        "• Böyük Telegram kanallarında <b>moderasiya</b>, <i>spamın qarşısının alınması</i>\n"
+        "• Təhqiredici sözlər yazanları <b>avtomatik ban</b> etmək\n"
+        "• <b>Vətəndaş müraciətləri</b> qəbul etmək və yönləndirmək\n"
+        "• Kanallara <b>ödənişli giriş</b> və abunə idarəetməsi\n"
+        "• Restoran və ticarət obyektlərində <b>sifariş qəbulu</b>, <i>endirim/bonus</i> sistemləri\n\n"
+        "Sizin ehtiyacınıza uyğun xüsusi funksiyalar mümkündür.\n\n"
+        "🚩 <b>Qeyd:</b> Sifariş prosesində ilkin depozit tələb oluna bilər (şərtlər sonrakı mərhələdə təqdim ediləcək)."
+    )
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="🚀 Sifarişə başla", callback_data="order_bot_begin")],
+            [InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")],
+        ]
+    )
+    await callback.message.answer(info, parse_mode="HTML", reply_markup=keyboard)
+    await callback.answer()
+
+@router.callback_query(F.data == "order_bot_begin")
+async def order_bot_begin(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer(
         "📋 Sifariş üçün məlumatları daxil edin:\n\n"
         "Ad, soyad, əlaqə nömrəsi yazın.",

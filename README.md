@@ -7,8 +7,8 @@ Modern, çoxfunksiyalı Telegram botu (Aiogram v3) — oyunlar, yeniliklər, rə
 - 🕹️ Köstəbək Oyunu (qrupda /game) — komanda ilə əyləncə, min. 3 nəfər
 - 🆕 Yeniliklər — admin əlavə edir, istifadəçilərə bildiriş gedir
 - 🌟 İstifadəçi rəyləri — ulduzla qiymətləndir, rəy yaz, admin cavab verə bilər
-- � RBCron balansı — balansı göstər/artır, qəbz adminə təsdiq üçün gedir
-- � PDF hədiyyəsi — “Müsahibəyə hazırlıq texnikaları” faylı
+- 💰 RBCron balansı — balansı göstər/artır, qəbz adminə təsdiq üçün gedir
+- 🎁 PDF hədiyyəsi — “Müsahibəyə hazırlıq texnikaları” faylı
 - 🌐 Sosial Mühit kanalı — qısa təsvir, giriş və link dəstəyi
 - ℹ️ DSMF/DOST haqqında məlumat blokları
 - 🔔 Admin start bildirişi — hansı build-in işə düşdüyü görünür
