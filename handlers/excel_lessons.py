@@ -121,20 +121,40 @@ async def process_phone(message: Message, state: FSMContext):
         # Grant access
         grant_excel_access(user_id, full_name, phone)
         
+        # Clear state first
+        await state.clear()
+        
         await message.answer(
             f"✅ <b>Təbriklər!</b>\n\n"
             f"Ödəniş uğurla tamamlandı ({EXCEL_ACCESS_PRICE} RBCron tutuldu).\n"
-            f"İndi Excel dərs materiallarına tam giriş hüququnuz var!\n\n"
-            f"Materialları görmək üçün aşağıdakı düyməyə toxunun.",
-            parse_mode="HTML",
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="📊 Excel Dərslərinə get", callback_data="excel_show_folders")]
-            ])
+            f"İndi Excel dərs materiallarına tam giriş hüququnuz var!",
+            parse_mode="HTML"
         )
+        
+        # Show folders directly
+        try:
+            folders = [d for d in os.listdir(EXCEL_LESSONS_DIR) if os.path.isdir(os.path.join(EXCEL_LESSONS_DIR, d))]
+            folders.sort()
+
+            if not folders:
+                await message.answer("⚠️ Hazırda heç bir dərs materialı yoxdur.")
+                return
+
+            keyboard = []
+            for folder in folders:
+                keyboard.append([InlineKeyboardButton(text=f"📁 {folder}", callback_data=f"list_files:{folder}")])
+            
+            keyboard.append([InlineKeyboardButton(text="🏠 Əsas menyuya qayıt", callback_data="main_menu")])
+
+            await message.answer(
+                "📚 Zəhmət olmasa, bir dərs qovluğu seçin:",
+                reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard)
+            )
+        except FileNotFoundError:
+            await message.answer("❌ Dərslik qovluğu tapılmadı. Zəhmət olmasa adminlə əlaqə saxlayın.")
     else:
         await message.answer("❌ Balansınız kifayət deyil. Zəhmət olmasa balansınızı artırın.")
-    
-    await state.clear()
+        await state.clear()
 
 # Show folders after access is granted
 @router.callback_query(F.data == "excel_show_folders")
