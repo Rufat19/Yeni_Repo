@@ -108,6 +108,10 @@ async def get_phone(message: Message, state: FSMContext):
 
 @register_router.message(RegisterForm.awaiting_screenshot)
 async def process_payment_proof(message: Message, state: FSMContext):
+    # Yalnız şəxsi mesajlarda qəbz qəbul et
+    if message.chat.type != "private":
+        return
+    
     data = await state.get_data()
     lang = data.get("lang", "az")
     if message.content_type != ContentType.PHOTO or not message.photo:

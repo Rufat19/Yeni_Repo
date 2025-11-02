@@ -41,6 +41,10 @@ async def send_receipt_to_admin(bot, user_id, photo_id):
 
 @payment_router.message(F.photo)
 async def payment_screenshot(message: Message):
+    # Yalnız şəxsi (private) mesajlarda ödəniş qəbul et
+    if message.chat.type != "private":
+        return  # Qruplarda şəkilləri ignore et
+    
     if message.from_user is None:
         await message.answer("Xəta baş verdi: istifadəçi məlumatı tapılmadı.")
         return
