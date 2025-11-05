@@ -165,3 +165,81 @@ async def user_history_command(message: Message, command: CommandObject):
         text += f"• {ts} — {sign}{delta} ( {prev_v} → {new_v} )  [{source}]  reason: {reason}\n"
 
     await message.answer(text, parse_mode="HTML")
+
+
+# Admin üçün kanal məlumatları əldə etmə
+@router.message(F.text.in_(["get_channel_info", "ping", "/get_channel_info", "/ping"]))
+async def get_channel_info_command(message: Message):
+    """Admin qrupda ping və ya get_channel_info yazanda kanal məlumatlarını göstər"""
+    # Yalnız admin istifadə edə bilər
+    if not message.from_user or message.from_user.id != ADMIN_ID:
+        return  # Sessizlik - admin deyilsə cavab vermirik
+    
+    try:
+        chat = message.chat
+        
+        # Chat məlumatlarını topla
+        chat_info = {
+            "chat_id": chat.id,
+            "type": chat.type,
+            "title": getattr(chat, 'title', 'N/A'),
+            "username": getattr(chat, 'username', None),
+            "description": getattr(chat, 'description', None),
+        }
+        
+        # Bot admin statusunu yoxla
+        try:
+            bot_member = await message.bot.get_chat_member(chat.id, message.bot.id)
+            bot_status = bot_member.status
+            bot_permissions = getattr(bot_member, 'can_delete_messages', False)
+        except Exception:
+            bot_status = "unknown"
+            bot_permissions = False
+        
+        # Chat üzv sayını al (əgər mümkündürsə)
+        try:
+            member_count = await message.bot.get_chat_member_count(chat.id)
+        except Exception:
+            member_count = "N/A"
+        
+        # Cavab mətnini hazırla
+        response_text = (
+            f"🏷️ <b>Kanal/Qrup Məlumatları</b>\n\n"
+            f"🆔 <b>Chat ID:</b> <code>{chat_info['chat_id']}</code>\n"
+            f"📝 <b>Ad:</b> {chat_info['title']}\n"
+            f"📂 <b>Növ:</b> {chat_info['type']}\n"
+        )
+        
+        if chat_info['username']:
+            response_text += f"🔗 <b>Username:</b> @{chat_info['username']}\n"
+            
+        if chat_info['description']:
+            desc_short = chat_info['description'][:100] + "..." if len(chat_info['description']) > 100 else chat_info['description']
+            response_text += f"📄 <b>Təsvir:</b> {desc_short}\n"
+        
+        response_text += (
+            f"👥 <b>Üzv sayı:</b> {member_count}\n"
+            f"🤖 <b>Bot statusu:</b> {bot_status}\n"
+            f"⚙️ <b>Admin hüquqları:</b> {'✅' if bot_permissions else '❌'}\n\n"
+            f"🕐 <b>Vaxt:</b> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        )
+        
+        await message.reply(response_text, parse_mode="HTML")
+        
+    except Exception as e:
+        await message.reply(f"❌ Məlumat əldə edilərkən xəta: {str(e)}")
+
+
+# Qısa ping cavabı
+@router.message(F.text.in_(["ping!", "pong", "/pong"]))
+async def ping_response(message: Message):
+    """Admin ping yazanda qısa cavab"""
+    if not message.from_user or message.from_user.id != ADMIN_ID:
+        return
+    
+    await message.reply(
+        f"🏓 Pong!\n"
+        f"Chat ID: <code>{message.chat.id}</code>\n"
+        f"Vaxt: {datetime.now().strftime('%H:%M:%S')}", 
+        parse_mode="HTML"
+    )
