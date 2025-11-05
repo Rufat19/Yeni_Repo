@@ -11,6 +11,14 @@ from config import ADMIN_ID, APP_VERSION
 
 router = Router()
 
+# Təkrar admin bildirimlərini qarşısını almaq üçün
+_recent_admin_notifications = set()
+
+async def _clear_notification_after_delay(user_id: int):
+    """5 dəqiqə sonra user_id-ni notification set-indən sil"""
+    await asyncio.sleep(300)  # 5 dəqiqə = 300 saniyə
+    _recent_admin_notifications.discard(user_id)
+
 
 # Kanal seçimi callback
 @router.callback_query(F.data == "channels")
@@ -103,7 +111,12 @@ async def start_menu(message: Message, state: FSMContext):
             lang = getattr(user, "language_code", None) or "unknown"
             log_event(user.id, display_name, "start", lang)
 
-            if ADMIN_ID:
+            # Admin bildirimi - təkrarlanmanın qarşısını al (5 dəqiqə ərzində)
+            if ADMIN_ID and user.id not in _recent_admin_notifications:
+                _recent_admin_notifications.add(user.id)
+                # 5 dəqiqə sonra set-dən sil
+                asyncio.create_task(_clear_notification_after_delay(user.id))
+                
                 now = get_baku_time_str()
                 admin_text = (
                     f"🔔 Yeni istifadəçi gəldi — bot işə düşdü!\n"
