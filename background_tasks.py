@@ -1,7 +1,8 @@
 import asyncio
 import logging
 from aiogram import Bot
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
+from utils.timezone_utils import get_baku_time
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ async def send_regular_message(bot: Bot, chat_id: int, interval: int = 3600):
     
     while True:
         try:
-            now = datetime.now()
+            now = get_baku_time()
             current_time = now.time()
             
             # Səhər 7:00 - 8:00 arasındamı?

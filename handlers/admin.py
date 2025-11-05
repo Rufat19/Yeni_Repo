@@ -9,6 +9,7 @@ import os
 from datetime import datetime, timedelta
 from aiogram.filters import CommandObject
 from utils.history_logger import get_user_history, summarize_user_history
+from utils.timezone_utils import get_baku_time_str, get_baku_time_short, get_baku_time
 
 router = Router()
 
@@ -80,7 +81,7 @@ async def admin_panel(message: Message, state: FSMContext):
         # Top 10 active users
         top_10_users = user_activity_counter.most_common(10)
         # New users in last 7 days (based on earliest_seen)
-        cutoff = datetime.utcnow() - timedelta(days=7)
+        cutoff = get_baku_time() - timedelta(days=7)
         new_users_last_7 = sum(1 for d in earliest_seen.values() if d >= cutoff)
 
         text = (
@@ -221,7 +222,7 @@ async def get_channel_info_command(message: Message):
             f"👥 <b>Üzv sayı:</b> {member_count}\n"
             f"🤖 <b>Bot statusu:</b> {bot_status}\n"
             f"⚙️ <b>Admin hüquqları:</b> {'✅' if bot_permissions else '❌'}\n\n"
-            f"🕐 <b>Vaxt:</b> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+            f"🕐 <b>Vaxt (Bakı):</b> {get_baku_time_str()}"
         )
         
         await message.reply(response_text, parse_mode="HTML")
@@ -240,6 +241,6 @@ async def ping_response(message: Message):
     await message.reply(
         f"🏓 Pong!\n"
         f"Chat ID: <code>{message.chat.id}</code>\n"
-        f"Vaxt: {datetime.now().strftime('%H:%M:%S')}", 
+        f"Vaxt (Bakı): {get_baku_time_short()}", 
         parse_mode="HTML"
     )

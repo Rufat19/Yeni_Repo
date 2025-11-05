@@ -26,8 +26,9 @@ async def channels_callback(callback: CallbackQuery, state: FSMContext):
 
 # İstifadəçi start tarixçəsini log fayla yazır
 def log_user_start(user_id):
+    from utils.timezone_utils import get_baku_time_str
     with open("user_start_history.log", "a", encoding="utf-8") as f:
-        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = get_baku_time_str()
         f.write(f"{user_id}|{now}\n")
 
 
@@ -103,11 +104,12 @@ async def start_menu(message: Message, state: FSMContext):
             log_event(user.id, display_name, "start", lang)
 
             if ADMIN_ID:
-                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                from utils.timezone_utils import get_baku_time_str
+                now = get_baku_time_str()
                 admin_text = (
                     f"🔔 Yeni istifadəçi gəldi — bot işə düşdü!\n"
                     f"👤 {display_name} (id: {user.id})\n"
-                    f"🕒 {now}\n"
+                    f"🕒 {now} (Bakı vaxtı)\n"
                     f"🌐 Lang: {lang}"
                 )
                 try:

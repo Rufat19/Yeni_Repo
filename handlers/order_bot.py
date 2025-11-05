@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from utils.timezone_utils import get_baku_time_str
 
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
@@ -24,7 +25,7 @@ def save_order_to_file(user_id: int, full_name: str, phone: str, details: str):
         "full_name": full_name,
         "phone": phone,
         "details": details,
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "timestamp": get_baku_time_str()
     }
 
     file_path = "orders.json"

@@ -1,6 +1,7 @@
 import sqlite3
 from config import DB_PATH
 from datetime import datetime
+from utils.timezone_utils import baku_now_for_history
 
 
 def _get_conn():
@@ -25,7 +26,7 @@ def add_news_to_db(title, content, admin_id):
 		)
 		cur = conn.execute(
 			"INSERT INTO news (title, content, admin_id, created_at) VALUES (?, ?, ?, ?)",
-			(title, content, admin_id, datetime.utcnow().isoformat()),
+			(title, content, admin_id, baku_now_for_history()),
 		)
 		conn.commit()
 		return cur.lastrowid

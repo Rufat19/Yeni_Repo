@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from utils.timezone_utils import baku_now_for_history
 from config import DATA_DIR
 
 
@@ -53,7 +54,7 @@ def log_balance_change(user_id: int, prev_balance: int, new_balance: int, reason
     events = data.get(key) or []
     delta = int(new_balance) - int(prev_balance)
     events.append({
-        "ts": datetime.utcnow().isoformat(),
+        "ts": baku_now_for_history(),
         "type": "balance_change",
         "delta": delta,
         "prev": int(prev_balance),

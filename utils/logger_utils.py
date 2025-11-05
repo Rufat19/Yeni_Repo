@@ -11,12 +11,13 @@ import os
 from typing import Optional
 from .logging_config import setup_logging
 import datetime
+from .timezone_utils import get_baku_time_str
 
 LOG_FILE = "user_activity.log"
 
 
 def log_event(user_id: int, username: str, action: str, language: str = "unknown"):
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = get_baku_time_str()
     # ensure directory exists
     os.makedirs(os.path.dirname(LOG_FILE) or ".", exist_ok=True)
     # sanitize fields to avoid breaking the log format
